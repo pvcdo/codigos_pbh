@@ -1,0 +1,394 @@
+2026-02-23 16:55:20.556 -03 [13060] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-23 16:55:20.557 -03 [13060] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-23 16:55:20.557 -03 [13060] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-23 16:55:21.217 -03 [18788] LOG:  sistema de banco de dados foi desligado em 2026-02-23 16:45:48 -03
+2026-02-23 16:55:21.249 -03 [13060] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-23 16:57:24.208 -03 [16896] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 16:57:24.208 -03 [16896] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 16:57:55.417 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:57:55.417 -03 [13060] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 16:57:59.143 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:57:59.143 -03 [13060] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 16:58:02.800 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:02.800 -03 [13060] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 16:58:15.784 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:15.784 -03 [13060] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 16:58:21.521 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:21.522 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:22.527 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:22.527 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:23.533 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:23.533 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:24.544 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:24.544 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:25.552 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:25.552 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:26.552 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:26.552 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:27.556 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:27.556 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:28.570 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:28.570 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:29.574 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:29.574 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:30.583 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:30.583 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:31.595 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:31.595 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:32.598 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:32.598 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:33.606 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:33.606 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:34.616 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:34.616 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:35.239 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:35.239 -03 [13060] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 16:58:35.619 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:35.619 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:36.626 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:36.626 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:37.634 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:37.635 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:38.643 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:38.643 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:39.657 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:39.657 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:40.664 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:40.665 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:41.669 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:41.669 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:42.677 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:42.678 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:43.689 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:43.689 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:44.704 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:44.704 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:45.712 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:45.712 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:46.726 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:46.726 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:47.732 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:47.732 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:48.743 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:48.744 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:49.755 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:49.755 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:50.763 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:50.763 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:51.777 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:51.777 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:52.793 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:52.793 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:53.798 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:53.798 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:54.807 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:54.807 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:55.820 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:55.820 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:56.831 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:56.831 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:57.839 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:57.839 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:58.848 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:58.849 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:58:59.862 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:58:59.863 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:59:00.871 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:59:00.871 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:59:01.881 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:59:01.881 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:59:02.896 -03 [13060] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 16:59:02.896 -03 [13060] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 16:59:03.431 -03 [13060] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 32804) foi terminado pela exceção 0xC000013A
+2026-02-23 16:59:03.431 -03 [13060] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 16:59:03.431 -03 [13060] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-23 16:59:03.439 -03 [13060] LOG:  todos os processos servidor foram terminados; reinicializando
+2026-02-23 16:59:03.450 -03 [13060] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-23 16:59:03.450 -03 [13060] LOG:  could not fork "io_worker" process: No error
+2026-02-23 16:59:03.450 -03 [13060] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-23 16:59:03.450 -03 [13060] LOG:  could not fork "startup" process: No error
+2026-02-23 16:59:03.453 -03 [13060] LOG:  sistema de banco de dados está desligado
+2026-02-23 16:59:21.382 -03 [1280] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-23 16:59:21.383 -03 [1280] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-23 16:59:21.383 -03 [1280] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-23 16:59:21.940 -03 [23380] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 16:55:21 -03
+2026-02-23 16:59:27.629 -03 [23380] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 16:59:27.629 -03 [23380] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 16:59:27.629 -03 [23380] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 16:59:54.682 -03 [23380] LOG:  syncing data directory (fsync), elapsed time: 32.74 s, current path: ./pg_commit_ts
+2026-02-23 16:59:54.698 -03 [23380] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-23 16:59:54.774 -03 [23380] LOG:  redo inicia em 0/17EC6A0
+2026-02-23 16:59:54.797 -03 [23380] LOG:  comprimento de registro inválido em 0/1829E08: esperado pelo menos 24, obtido 0
+2026-02-23 16:59:54.797 -03 [23380] LOG:  refazer feito em 0/1829DD0 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.03 s
+2026-02-23 16:59:54.884 -03 [11580] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-23 16:59:54.972 -03 [11580] LOG:  checkpoint complete: wrote 35 buffers (0.2%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.004 s, sync=0.039 s, total=0.174 s; sync files=11, longest=0.006 s, average=0.004 s; distance=245 kB, estimate=245 kB; lsn=0/1829E08, redo lsn=0/1829E08
+2026-02-23 16:59:54.995 -03 [1280] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-23 17:00:16.828 -03 [30552] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:00:16.828 -03 [30552] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 17:03:14.126 -03 [2828] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:03:14.126 -03 [2828] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 123: "host    all             all             0.0.0.0/0               scram-sha-256"
+2026-02-23 17:03:21.328 -03 [19532] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:03:21.328 -03 [19532] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 17:03:27.066 -03 [6860] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:03:27.066 -03 [6860] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 17:07:55.615 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:07:55.615 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:07:56.620 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:07:56.621 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:07:57.627 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:07:57.628 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:07:58.631 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:07:58.632 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:07:59.634 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:07:59.634 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:00.621 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:00.621 -03 [1280] LOG:  não foi possível criar novo processo para conexão: unrecognized winsock error 10035
+2026-02-23 17:08:00.641 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:00.642 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:01.653 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:01.654 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:02.658 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:02.658 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:03.665 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:03.665 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:04.678 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:04.678 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:05.684 -03 [1280] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:08:05.684 -03 [1280] LOG:  could not fork "autovacuum worker" process: unrecognized winsock error 10035
+2026-02-23 17:08:06.392 -03 [1280] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 26320) foi terminado pela exceção 0xC000013A
+2026-02-23 17:08:06.392 -03 [1280] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 17:08:06.393 -03 [1280] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-23 17:08:06.400 -03 [1280] LOG:  todos os processos servidor foram terminados; reinicializando
+2026-02-23 17:08:06.411 -03 [1280] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-23 17:08:06.411 -03 [1280] LOG:  could not fork "io_worker" process: No error
+2026-02-23 17:08:06.411 -03 [1280] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-23 17:08:06.411 -03 [1280] LOG:  could not fork "startup" process: No error
+2026-02-23 17:08:06.414 -03 [1280] LOG:  sistema de banco de dados está desligado
+2026-02-23 17:08:14.497 -03 [27472] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-23 17:08:14.499 -03 [27472] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-23 17:08:14.499 -03 [27472] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-23 17:08:15.018 -03 [10248] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 16:59:54 -03
+2026-02-23 17:08:20.779 -03 [10248] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 17:08:20.779 -03 [10248] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 17:08:20.779 -03 [10248] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 17:08:48.217 -03 [10248] LOG:  syncing data directory (fsync), elapsed time: 33.19 s, current path: ./pg_commit_ts
+2026-02-23 17:08:48.302 -03 [10248] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-23 17:08:48.368 -03 [10248] LOG:  redo inicia em 0/1829E80
+2026-02-23 17:08:48.374 -03 [10248] LOG:  comprimento de registro inválido em 0/1829EB8: esperado pelo menos 24, obtido 0
+2026-02-23 17:08:48.377 -03 [10248] LOG:  refazer feito em 0/1829E80 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.02 s
+2026-02-23 17:08:48.511 -03 [27316] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-23 17:08:48.563 -03 [27316] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.007 s, sync=0.007 s, total=0.173 s; sync files=2, longest=0.005 s, average=0.004 s; distance=0 kB, estimate=0 kB; lsn=0/1829EB8, redo lsn=0/1829EB8
+2026-02-23 17:08:48.813 -03 [27472] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-23 17:08:55.034 -03 [25756] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:08:55.034 -03 [25756] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 17:09:01.016 -03 [17316] FATAL:  autenticação do tipo senha falhou para o usuário "pr114067"
+2026-02-23 17:09:01.016 -03 [17316] DETALHE:  A função de banco de dados (role) "pr114067" não existe.
+	A conexão correspondeu ao arquivo "C:/usuarios/pr114067/Desktop/Desktop/codigos/db/pg_hba.conf" linha 115: "host    all             all             127.0.0.1/32            password"
+2026-02-23 17:09:06.281 -03 [27472] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 7656) foi terminado pela exceção 0xC000013A
+2026-02-23 17:09:06.281 -03 [27472] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 17:09:06.281 -03 [27472] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-23 17:09:06.289 -03 [27472] LOG:  todos os processos servidor foram terminados; reinicializando
+2026-02-23 17:09:06.756 -03 [12020] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 17:08:48 -03
+2026-02-23 17:09:12.469 -03 [12020] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 17:09:12.469 -03 [12020] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 17:09:12.469 -03 [12020] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 17:09:14.369 -03 [27472] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:09:14.369 -03 [27472] LOG:  could not fork "bgwriter" process: unrecognized winsock error 10035
+2026-02-23 17:09:14.372 -03 [27472] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:09:14.372 -03 [27472] LOG:  could not fork "checkpointer" process: unrecognized winsock error 10035
+2026-02-23 17:09:14.372 -03 [27472] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 17:09:14.373 -03 [27472] LOG:  could not fork "bgwriter" process: unrecognized winsock error 10035
+2026-02-23 17:09:14.375 -03 [27472] LOG:  processo de ativação (PID 12020) foi terminado pela exceção 0xC000013A
+2026-02-23 17:09:14.375 -03 [27472] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 17:09:14.375 -03 [27472] LOG:  interrompendo a ativação devido a falha no processo de ativação
+2026-02-23 17:09:14.377 -03 [27472] LOG:  sistema de banco de dados está desligado
+2026-02-23 17:12:42.069 -03 [27140] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-23 17:12:42.070 -03 [27140] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-23 17:12:42.070 -03 [27140] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-23 17:12:42.707 -03 [4036] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 17:08:48 -03
+2026-02-23 17:12:48.422 -03 [4036] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 17:12:48.422 -03 [4036] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 17:12:48.422 -03 [4036] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 17:13:15.233 -03 [4036] LOG:  syncing data directory (fsync), elapsed time: 32.49 s, current path: ./pg_commit_ts
+2026-02-23 17:13:15.321 -03 [4036] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-23 17:13:15.427 -03 [4036] LOG:  redo inicia em 0/1829F30
+2026-02-23 17:13:15.436 -03 [4036] LOG:  comprimento de registro inválido em 0/1829F68: esperado pelo menos 24, obtido 0
+2026-02-23 17:13:15.441 -03 [4036] LOG:  refazer feito em 0/1829F30 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.03 s
+2026-02-23 17:13:15.643 -03 [19856] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-23 17:13:15.679 -03 [19856] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.002 s, sync=0.007 s, total=0.228 s; sync files=2, longest=0.005 s, average=0.004 s; distance=0 kB, estimate=0 kB; lsn=0/1829F68, redo lsn=0/1829F68
+2026-02-23 17:13:15.727 -03 [27140] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-23 17:13:20.732 -03 [27140] LOG:  SIGHUP recebido, recarregando arquivos de configuração
+2026-02-23 17:13:35.073 -03 [27140] LOG:  SIGHUP recebido, recarregando arquivos de configuração
+2026-02-23 17:13:52.698 -03 [6796] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-23 17:13:52.699 -03 [6796] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-23 17:13:52.700 -03 [6796] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-23 17:13:53.331 -03 [31784] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 17:13:15 -03
+2026-02-23 17:13:59.014 -03 [31784] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 17:13:59.014 -03 [31784] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 17:13:59.014 -03 [31784] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 17:14:26.081 -03 [31784] LOG:  syncing data directory (fsync), elapsed time: 32.74 s, current path: ./pg_commit_ts
+2026-02-23 17:14:26.094 -03 [31784] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-23 17:14:26.167 -03 [31784] LOG:  redo inicia em 0/1829FE0
+2026-02-23 17:14:26.170 -03 [31784] LOG:  comprimento de registro inválido em 0/182A030: esperado pelo menos 24, obtido 0
+2026-02-23 17:14:26.171 -03 [31784] LOG:  refazer feito em 0/1829FE0 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.01 s
+2026-02-23 17:14:26.259 -03 [14140] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-23 17:14:26.293 -03 [14140] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.003 s, sync=0.007 s, total=0.119 s; sync files=2, longest=0.004 s, average=0.004 s; distance=0 kB, estimate=0 kB; lsn=0/182A030, redo lsn=0/182A030
+2026-02-23 17:14:26.318 -03 [6796] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-23 17:14:32.591 -03 [6796] LOG:  SIGHUP recebido, recarregando arquivos de configuração
+2026-02-23 17:15:04.011 -03 [29936] FATAL:  role "pr114067" não existe
+2026-02-23 17:15:04.455 -03 [5772] FATAL:  role "pr114067" não existe
+2026-02-23 17:41:12.807 -03 [22928] ERRO:  erro de sintaxe em ou próximo a ""INDEX_NAME"" no caractere 99
+2026-02-23 17:41:12.807 -03 [22928] COMANDO:  
+	                        select distinct
+	    t.relname as table_name,
+	    i.relname as index_name "INDEX_NAME",
+	    a.attname as column_name
+	from
+	    pg_class t,
+	    pg_class i,
+	    pg_index ix,
+	    pg_attribute a
+	where
+	    t.oid = ix.indrelid
+	    and i.oid = ix.indexrelid
+	    and a.attrelid = t.oid
+	    and a.attnum = ANY(ix.indkey)
+	    and t.relkind = 'r'
+	   and t.relname = $1
+	order by
+	    t.relname,
+	    i.relname
+	    
+2026-02-23 17:41:21.030 -03 [22928] ERRO:  erro de sintaxe em ou próximo a ""INDEX_NAME"" no caractere 99
+2026-02-23 17:41:21.030 -03 [22928] COMANDO:  
+	                        select distinct
+	    t.relname as table_name,
+	    i.relname as index_name "INDEX_NAME",
+	    a.attname as column_name
+	from
+	    pg_class t,
+	    pg_class i,
+	    pg_index ix,
+	    pg_attribute a
+	where
+	    t.oid = ix.indrelid
+	    and i.oid = ix.indexrelid
+	    and a.attrelid = t.oid
+	    and a.attnum = ANY(ix.indkey)
+	    and t.relkind = 'r'
+	   and t.relname = $1
+	order by
+	    t.relname,
+	    i.relname
+	    
+2026-02-23 17:42:01.046 -03 [22928] ERRO:  erro de sintaxe em ou próximo a ""INDEX_NAME"" no caractere 99
+2026-02-23 17:42:01.046 -03 [22928] COMANDO:  
+	                        select distinct
+	    t.relname as table_name,
+	    i.relname as index_name "INDEX_NAME",
+	    a.attname as column_name
+	from
+	    pg_class t,
+	    pg_class i,
+	    pg_index ix,
+	    pg_attribute a
+	where
+	    t.oid = ix.indrelid
+	    and i.oid = ix.indexrelid
+	    and a.attrelid = t.oid
+	    and a.attnum = ANY(ix.indkey)
+	    and t.relkind = 'r'
+	   and t.relname = $1
+	order by
+	    t.relname,
+	    i.relname
+	    
+2026-02-23 17:44:26.664 -03 [14140] LOG:  checkpoint starting: time
+2026-02-23 17:44:30.424 -03 [14140] LOG:  checkpoint complete: wrote 33 buffers (0.2%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=3.656 s, sync=0.087 s, total=3.760 s; sync files=32, longest=0.006 s, average=0.003 s; distance=136 kB, estimate=136 kB; lsn=0/184C320, redo lsn=0/184C290
+2026-02-23 17:45:18.017 -03 [22928] ERRO:  coluna "31.00142850/2026-04" não existe no caractere 60
+2026-02-23 17:45:18.017 -03 [22928] COMANDO:  INSERT INTO C_ABC (ticket, matricula, a_partir_de)
+	VALUES ("31.00142850/2026-04","1909620","2026-03-04 00:00:00")
+2026-02-23 17:46:12.792 -03 [22928] ERRO:  duplicar valor da chave viola a restrição de unicidade "c_abc_pkey"
+2026-02-23 17:46:12.792 -03 [22928] DETALHE:  Chave (ticket)=(31.00142850/2026-04) já existe.
+2026-02-23 17:46:12.792 -03 [22928] COMANDO:  INSERT INTO C_ABC (ticket, matricula, a_partir_de)
+	VALUES ('31.00142850/2026-04','1909620','2026-03-04 00:00:00')
+2026-02-23 17:49:26.436 -03 [14140] LOG:  checkpoint starting: time
+2026-02-23 17:49:27.136 -03 [14140] LOG:  checkpoint complete: wrote 6 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.667 s, sync=0.017 s, total=0.701 s; sync files=6, longest=0.004 s, average=0.003 s; distance=18 kB, estimate=124 kB; lsn=0/1850DC0, redo lsn=0/1850D68
+2026-02-23 17:52:37.531 -03 [22928] ERRO:  relação "c_abc" não existe no caractere 15
+2026-02-23 17:52:37.531 -03 [22928] COMANDO:  SELECT * FROM C_ABC
+2026-02-23 17:54:26.151 -03 [14140] LOG:  checkpoint starting: time
+2026-02-23 17:54:27.082 -03 [14140] LOG:  checkpoint complete: wrote 8 buffers (0.0%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.899 s, sync=0.018 s, total=0.932 s; sync files=8, longest=0.004 s, average=0.003 s; distance=45 kB, estimate=116 kB; lsn=0/185C560, redo lsn=0/185C508
+2026-02-23 18:01:28.981 -03 [22928] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2026-02-23 18:01:34.779 -03 [6796] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 21396) foi terminado pela exceção 0xC000013A
+2026-02-23 18:01:34.779 -03 [6796] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 18:01:34.780 -03 [6796] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-23 18:01:34.789 -03 [6796] LOG:  todos os processos servidor foram terminados; reinicializando
+2026-02-23 18:01:35.290 -03 [30364] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 17:54:27 -03
+2026-02-23 18:01:41.017 -03 [30364] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-23 18:01:41.017 -03 [30364] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-23 18:01:41.017 -03 [30364] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-23 18:01:43.678 -03 [6796] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 18:01:43.678 -03 [6796] LOG:  could not fork "bgwriter" process: unrecognized winsock error 10035
+2026-02-23 18:01:43.680 -03 [6796] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 18:01:43.680 -03 [6796] LOG:  could not fork "checkpointer" process: unrecognized winsock error 10035
+2026-02-23 18:01:43.681 -03 [6796] LOG:  falha na chamada de CreateProcess(): unrecognized winsock error 10035 (código de erro 2)
+2026-02-23 18:01:43.681 -03 [6796] LOG:  could not fork "bgwriter" process: unrecognized winsock error 10035
+2026-02-23 18:01:43.684 -03 [6796] LOG:  processo de ativação (PID 30364) foi terminado pela exceção 0xC000013A
+2026-02-23 18:01:43.684 -03 [6796] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-23 18:01:43.684 -03 [6796] LOG:  interrompendo a ativação devido a falha no processo de ativação
+2026-02-23 18:01:43.686 -03 [6796] LOG:  sistema de banco de dados está desligado
+2026-02-24 12:10:37.824 -03 [5176] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-24 12:10:37.825 -03 [5176] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-24 12:10:37.825 -03 [5176] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-24 12:10:38.418 -03 [29604] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-23 17:54:27 -03
+2026-02-24 12:10:48.761 -03 [29604] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-24 12:10:48.761 -03 [29604] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-24 12:10:48.761 -03 [29604] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-24 12:11:15.988 -03 [29604] LOG:  syncing data directory (fsync), elapsed time: 37.56 s, current path: ./pg_commit_ts
+2026-02-24 12:11:16.182 -03 [29604] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-24 12:11:16.503 -03 [29604] LOG:  redo inicia em 0/185C508
+2026-02-24 12:11:16.525 -03 [29604] LOG:  comprimento de registro inválido em 0/185C610: esperado pelo menos 24, obtido 0
+2026-02-24 12:11:16.536 -03 [29604] LOG:  refazer feito em 0/185C5D8 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.10 s
+2026-02-24 12:11:16.886 -03 [32500] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-24 12:11:16.990 -03 [32500] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.017 s, sync=0.017 s, total=0.416 s; sync files=2, longest=0.014 s, average=0.009 s; distance=0 kB, estimate=0 kB; lsn=0/185C610, redo lsn=0/185C610
+2026-02-24 12:11:17.141 -03 [5176] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-24 12:16:17.006 -03 [32500] LOG:  checkpoint starting: time
+2026-02-24 12:16:20.834 -03 [32500] LOG:  checkpoint complete: wrote 34 buffers (0.2%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=3.740 s, sync=0.073 s, total=3.829 s; sync files=30, longest=0.004 s, average=0.003 s; distance=184 kB, estimate=184 kB; lsn=0/188B078, redo lsn=0/188A888
+2026-02-24 13:46:18.045 -03 [32500] LOG:  checkpoint starting: time
+2026-02-24 13:46:19.065 -03 [32500] LOG:  checkpoint complete: wrote 9 buffers (0.1%), wrote 0 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.992 s, sync=0.013 s, total=1.022 s; sync files=4, longest=0.004 s, average=0.004 s; distance=54 kB, estimate=171 kB; lsn=0/1898380, redo lsn=0/1898328
+2026-02-24 13:48:10.674 -03 [24096] LOG:  não foi possível receber dados do cliente: unrecognized winsock error 10054
+2026-02-24 13:48:19.545 -03 [5176] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 11436) foi terminado pela exceção 0xC000013A
+2026-02-24 13:48:19.545 -03 [5176] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-24 13:48:19.545 -03 [5176] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-24 13:48:19.557 -03 [5176] LOG:  todos os processos servidor foram terminados; reinicializando
+2026-02-24 13:48:19.569 -03 [5176] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-24 13:48:19.570 -03 [5176] LOG:  could not fork "io_worker" process: No error
+2026-02-24 13:48:19.570 -03 [5176] LOG:  falha na chamada de CreateProcess(): No error (código de erro 2)
+2026-02-24 13:48:19.570 -03 [5176] LOG:  could not fork "startup" process: No error
+2026-02-24 13:48:19.572 -03 [5176] LOG:  sistema de banco de dados está desligado
+2026-02-25 16:24:43.986 -03 [31432] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-02-25 16:24:43.988 -03 [31432] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-02-25 16:24:43.988 -03 [31432] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-02-25 16:24:45.010 -03 [18536] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-24 13:46:19 -03
+2026-02-25 16:24:55.450 -03 [18536] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-02-25 16:24:55.450 -03 [18536] DETALHE:  Continuar tentando por 30 segundos.
+2026-02-25 16:24:55.450 -03 [18536] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-02-25 16:25:21.723 -03 [18536] LOG:  syncing data directory (fsync), elapsed time: 36.71 s, current path: ./pg_commit_ts
+2026-02-25 16:25:21.813 -03 [18536] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-02-25 16:25:21.879 -03 [18536] LOG:  redo inicia em 0/1898328
+2026-02-25 16:25:21.887 -03 [18536] LOG:  comprimento de registro inválido em 0/1898430: esperado pelo menos 24, obtido 0
+2026-02-25 16:25:21.890 -03 [18536] LOG:  refazer feito em 0/18983F8 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.02 s
+2026-02-25 16:25:21.984 -03 [10868] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-02-25 16:25:22.024 -03 [10868] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.005 s, sync=0.006 s, total=0.125 s; sync files=2, longest=0.004 s, average=0.003 s; distance=0 kB, estimate=0 kB; lsn=0/1898430, redo lsn=0/1898430
+2026-02-25 16:25:22.072 -03 [31432] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-02-25 17:01:35.587 -03 [31432] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 33088) foi terminado pela exceção 0xC000013A
+2026-02-25 17:01:35.587 -03 [31432] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-02-25 17:01:35.587 -03 [31432] LOG:  terminando quaisquer outros processos servidor ativos
+2026-02-25 17:01:35.595 -03 [31432] LOG:  pedido de desligamento rápido foi recebido
+^C

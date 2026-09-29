@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Comandos Essenciais do Git</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        pre {
+            background-color: #eee;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #c0392b;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            background: #e9e9e9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Guia de Comandos Essenciais do Git</h1>
+        <p>Este guia rápido cobre as configurações iniciais do Git e os comandos mais utilizados no dia a dia do desenvolvimento.</p>
+
+        <div class="section">
+            <h2>Configurações Iniciais</h2>
+            <p>Antes de começar, é fundamental configurar seu nome e e-mail. Essas informações serão vinculadas a cada commit que você fizer.</p>
+            <pre><code># Configura seu nome de usuário globalmente
+git config --global user.name "Seu Nome"</code></pre>
+            <pre><code># Configura seu e-mail globalmente
+git config --global user.email "seu-email@example.com"</code></pre>
+            <pre><code># Verifica se as configurações foram salvas
+git config --global --list</code></pre>
+        </div>
+
+        <div class="section">
+            <h2>Criando e Gerenciando Repositórios</h2>
+            <p>Os comandos abaixo ajudam a iniciar um novo repositório ou a copiar um existente.</p>
+            <ul>
+                <li><strong><code>git init</code></strong>: Cria um novo repositório Git vazio no diretório atual.</li>
+                <li><strong><code>git clone [URL]</code></strong>: Clona um repositório remoto para sua máquina local.</li>
+                <li><strong><code>git status</code></strong>: Exibe o status do seu repositório, mostrando arquivos modificados, novos ou prontos para commit.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Salvando Alterações (Commits)</h2>
+            <p>O fluxo de trabalho básico do Git envolve adicionar arquivos à "área de stage" e depois salvá-los com um commit.</p>
+            <ul>
+                <li><strong><code>git add .</code></strong>: Adiciona todas as alterações do diretório atual para a área de stage.</li>
+                <li><strong><code>git add [nome-do-arquivo]</code></strong>: Adiciona um arquivo específico para a área de stage.</li>
+                <li><strong><code>git commit -m "Mensagem do commit"</code></strong>: Salva as alterações da área de stage. A mensagem deve ser curta e descritiva.</li>
+                <li><strong><code>git log</code></strong>: Exibe o histórico de commits do seu repositório.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Sincronizando com Repositórios Remotos</h2>
+            <p>Use estes comandos para manter seu código local e remoto atualizados.</p>
+            <ul>
+                <li><strong><code>git remote add origin [URL]</code></strong>: Associa um repositório local a um repositório remoto (geralmente chamado de <code>origin</code>).</li>
+                <li><strong><code>git push -u origin [nome-do-branch]</code></strong>: Envia seus commits locais para o repositório remoto. O <code>-u</code> (upstream) só precisa ser usado na primeira vez.</li>
+                <li><strong><code>git pull</code></strong>: Baixa e mescla as alterações do repositório remoto para o seu local.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Ramificações (Branches)</h2>
+            <p>Branches permitem que você trabalhe em novas funcionalidades sem afetar o código principal (<code>main</code> ou <code>master</code>).</p>
+            <ul>
+                <li><strong><code>git branch</code></strong>: Lista todas as branches locais.</li>
+                <li><strong><code>git branch [nome-da-branch]</code></strong>: Cria uma nova branch.</li>
+                <li><strong><code>git checkout [nome-da-branch]</code></strong>: Muda para a branch especificada.</li>
+                <li><strong><code>git checkout -b [nome-da-branch]</code></strong>: Cria e já muda para a nova branch (atalho).</li>
+                <li><strong><code>git merge [nome-da-branch]</code></strong>: Mescla as alterações de uma branch para a branch atual.</li>
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>

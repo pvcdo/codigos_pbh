@@ -1,0 +1,203 @@
+<script>
+
+/**
+ * ============================================================
+ * api.html
+ * Comunicação Frontend ↔ Apps Script
+ * ============================================================
+ */
+
+
+const API = {
+
+
+    /**
+     * Busca processo pelo PDG ou ID
+     */
+    buscarProcesso(dados){
+
+        return new Promise((resolve,reject)=>{
+
+
+            google.script.run
+
+            .withSuccessHandler(function(resposta){
+
+                resolve(resposta);
+
+            })
+
+            .withFailureHandler(function(erro){
+
+                reject(erro);
+
+            })
+
+            .buscarProcesso(
+                dados.valor,
+                dados.tipo
+            );
+
+
+        });
+
+
+    },
+
+
+
+
+    /**
+     * Busca servidor pelo BM
+     */
+    buscarServidor(bm){
+
+
+        return new Promise((resolve,reject)=>{
+
+
+            google.script.run
+
+            .withSuccessHandler(function(resposta){
+
+                resolve(resposta);
+
+            })
+
+
+            .withFailureHandler(function(erro){
+
+                reject(erro);
+
+            })
+
+
+            .buscarServidorPorBM(bm);
+
+
+
+        });
+
+
+    },
+
+
+
+
+
+    /**
+     * Realiza o cadastro
+     */
+    cadastrarProcesso(dados){
+
+
+        return new Promise((resolve,reject)=>{
+
+
+            google.script.run
+
+            .withSuccessHandler(function(resposta){
+
+                resolve(resposta);
+
+            })
+
+
+            .withFailureHandler(function(erro){
+
+                reject(erro);
+
+            })
+
+
+            .cadastrarProcesso(dados);
+
+
+
+        });
+
+
+    },
+
+
+
+
+
+    /**
+     * Carrega listas do sistema
+     */
+    carregarListas(){
+
+
+        return new Promise((resolve,reject)=>{
+
+
+            google.script.run
+
+            .withSuccessHandler(function(resposta){
+
+                resolve(resposta);
+
+            })
+
+
+            .withFailureHandler(function(erro){
+
+                reject(erro);
+
+            })
+
+
+            .getListasFormulario();
+
+
+
+        });
+
+
+    },
+
+
+
+
+
+    /**
+     * Busca data atual
+     */
+    hoje(){
+
+
+        return new Promise((resolve,reject)=>{
+
+
+            google.script.run
+
+            .withSuccessHandler(function(resposta){
+
+                resolve(resposta);
+
+            })
+
+
+            .withFailureHandler(function(erro){
+
+                reject(erro);
+
+            })
+
+
+            .getDataAtual();
+
+
+
+        });
+
+
+    }
+
+
+
+};
+
+
+</script>

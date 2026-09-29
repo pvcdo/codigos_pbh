@@ -1,0 +1,591 @@
+<script>
+
+/**
+ * ============================================================
+ * autocomplete.html
+ * Autocomplete da Motivação
+ * ============================================================
+ */
+
+let motivacoesSelecionadas = [];
+
+
+/**
+ * Inicialização
+ */
+document.addEventListener(
+    "DOMContentLoaded",
+    iniciarAutocomplete
+);
+
+
+
+
+
+function iniciarAutocomplete(){
+
+
+    const campo =
+    document.getElementById(
+        "motivacao"
+    );
+
+
+
+    if(!campo)
+        return;
+
+
+
+
+
+    campo.addEventListener(
+        "input",
+        pesquisarMotivacao
+    );
+
+
+
+    campo.addEventListener(
+        "focus",
+        pesquisarMotivacao
+    );
+
+
+
+    document.addEventListener(
+        "click",
+        fecharAutocomplete
+    );
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Pesquisa na lista de motivações
+ */
+function pesquisarMotivacao(e){
+
+
+
+    const campo =
+    e.target;
+
+
+
+    const valor =
+    campo.value
+    .toLowerCase()
+    .trim();
+
+
+
+
+
+    limparSugestoes();
+
+
+
+
+
+    if(!window.motivacoes)
+        return;
+
+
+
+    if(!valor)
+        return;
+
+
+
+
+
+
+
+    const resultados =
+
+        window.motivacoes.filter(item=>{
+
+
+            return item
+            .toLowerCase()
+            .includes(valor);
+
+
+        })
+        .slice(0,20);
+
+
+
+
+
+
+
+
+    criarSugestoes(
+        resultados
+    );
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Cria lista visual
+ */
+function criarSugestoes(lista){
+
+
+
+    const container =
+    document.getElementById(
+        "listaMotivacao"
+    );
+
+
+
+    if(!container)
+        return;
+
+
+
+
+
+    const box =
+    document.createElement(
+        "div"
+    );
+
+
+
+    box.className =
+    "autocomplete-items";
+
+
+
+
+
+    lista.forEach(item=>{
+
+
+        const div =
+        document.createElement(
+            "div"
+        );
+
+
+
+        div.className =
+        "autocomplete-item";
+
+
+
+        div.textContent =
+        item;
+
+
+
+
+
+        div.addEventListener(
+            "click",
+            function(e){
+
+
+                e.stopPropagation();
+
+
+
+                selecionarMotivacao(
+                    item
+                );
+
+
+            }
+        );
+
+
+
+        box.appendChild(div);
+
+
+
+    });
+
+
+
+
+
+
+    container.appendChild(box);
+
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Seleciona uma motivação
+ */
+function selecionarMotivacao(valor){
+
+    const campo =
+    document.getElementById(
+        "motivacao"
+    );
+
+    if(
+        !valor ||
+        motivacoesSelecionadas.includes(valor)
+    ){
+
+        campo.value = "";
+        limparSugestoes();
+        return;
+
+    }
+
+    motivacoesSelecionadas.push(valor);
+    campo.value =
+    "";
+
+    renderizarTagsMotivacao();
+    limparSugestoes();
+
+}
+
+/**
+ * Renderiza as motivações selecionadas como tags removíveis.
+ */
+function renderizarTagsMotivacao(){
+
+    const container =
+    document.getElementById("tagsMotivacao");
+
+    if(!container)
+        return;
+
+    container.innerHTML = "";
+
+    motivacoesSelecionadas.forEach((valor, indice) => {
+
+        const tag =
+        document.createElement("div");
+
+        tag.className = "tag-motivacao";
+
+        const texto =
+        document.createElement("span");
+
+        texto.textContent = valor;
+
+        const botao =
+        document.createElement("button");
+
+        botao.type = "button";
+        botao.title = "Remover motivação";
+        botao.setAttribute("aria-label", "Remover motivação");
+        botao.textContent = "×";
+
+        botao.addEventListener("click", function(){
+            motivacoesSelecionadas.splice(indice, 1);
+            renderizarTagsMotivacao();
+        });
+
+        tag.appendChild(texto);
+        tag.appendChild(botao);
+        container.appendChild(tag);
+
+    });
+
+}
+
+/**
+ * Retorna as tags no formato esperado pelo cadastro.
+ */
+function obterValorMotivacao(){
+
+    const campo =
+    document.getElementById("motivacao");
+
+    const textoDigitado =
+    campo ? campo.value.trim() : "";
+
+    return motivacoesSelecionadas
+        .concat(textoDigitado ? [textoDigitado] : [])
+        .join("; ");
+
+}
+
+/**
+ * Remove todas as tags selecionadas.
+ */
+function limparMotivacoesSelecionadas(){
+
+    motivacoesSelecionadas = [];
+    renderizarTagsMotivacao();
+
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * Remove sugestões abertas
+ */
+function limparSugestoes(){
+
+    indiceAutocomplete = -1;
+
+
+
+    const container =
+    document.getElementById(
+        "listaMotivacao"
+    );
+
+
+
+    if(container){
+
+
+        container.innerHTML="";
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Fecha quando clicar fora
+ */
+function fecharAutocomplete(e){
+
+
+
+    const campo =
+    document.getElementById(
+        "motivacao"
+    );
+
+
+
+    const lista =
+    document.getElementById(
+        "listaMotivacao"
+    );
+
+
+
+
+
+    if(
+        campo &&
+        lista &&
+        !campo.contains(e.target) &&
+        !lista.contains(e.target)
+    ){
+
+
+        limparSugestoes();
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Permite escolher com teclado
+ * (setas + Enter)
+ */
+let indiceAutocomplete = -1;
+
+
+
+document.addEventListener(
+    "keydown",
+    function(e){
+
+
+
+        const lista =
+        document.querySelectorAll(
+            ".autocomplete-item"
+        );
+
+
+
+        if(!lista.length)
+            return;
+
+
+
+
+
+        if(e.key==="ArrowDown"){
+
+
+            indiceAutocomplete++;
+
+
+
+            if(
+                indiceAutocomplete >= lista.length
+            ){
+
+                indiceAutocomplete=0;
+
+            }
+
+
+
+            marcarSugestao(
+                lista
+            );
+
+        }
+
+
+
+
+
+
+        if(e.key==="ArrowUp"){
+
+
+            indiceAutocomplete--;
+
+
+
+            if(
+                indiceAutocomplete < 0
+            ){
+
+                indiceAutocomplete =
+                lista.length-1;
+
+            }
+
+
+
+            marcarSugestao(
+                lista
+            );
+
+        }
+
+
+
+
+
+
+        if(e.key==="Enter"){
+
+
+
+            if(
+                indiceAutocomplete >=0
+            ){
+
+
+                selecionarMotivacao(
+                    lista[
+                        indiceAutocomplete
+                    ]
+                    .textContent
+                );
+
+
+
+                e.preventDefault();
+
+
+            }
+
+
+        }
+
+
+
+    }
+
+);
+
+
+
+
+
+
+
+
+
+function marcarSugestao(lista){
+
+
+
+    lista.forEach(
+        item=>
+        item.style.background=""
+    );
+
+
+
+    lista[
+        indiceAutocomplete
+    ]
+    .style.background="#edf3ff";
+
+
+}
+
+
+
+
+
+</script>

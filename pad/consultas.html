@@ -1,0 +1,418 @@
+<script>
+
+/**
+ * ============================================================
+ * consultas.html
+ * Tratamento das consultas retornadas pelo Apps Script
+ * ============================================================
+ */
+
+
+/**
+ * Preenche todos os campos do processo
+ */
+function preencherDadosProcesso(dados){
+
+
+    if(!dados)
+        return;
+
+
+
+    const campos = [
+
+        "processo",
+        "pdg",
+        "idProcesso",
+        "dataRecebimento",
+        "responsavel",
+        "bm",
+        "nome",
+        "cargo",
+        "lotacao",
+        "regional",
+        "vinculo",
+        "situacaoFuncional",
+        "dataEncaminhamento",
+        "encaminhadoPara",
+        "status",
+        "motivacao",
+        "publicacaoDOM",
+        "observacoes"
+
+    ];
+
+
+
+
+    campos.forEach(campo=>{
+
+
+        const elemento =
+        document.getElementById(campo);
+
+
+
+        if(!elemento)
+            return;
+
+
+
+        let valor =
+        dados[campo] ?? "";
+
+
+
+        /*
+         * Campos de data precisam do formato
+         * aceito pelo input type=date
+         */
+        if(
+            campo==="dataRecebimento" ||
+            campo==="dataEncaminhamento"
+        ){
+
+            valor =
+            converterDataInput(valor);
+
+        }
+
+
+
+        elemento.value = valor;
+
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+/**
+ * Preenche somente dados funcionais
+ */
+function preencherDadosServidor(dados){
+
+
+    if(!dados)
+        return;
+
+
+
+
+    const campos = [
+
+        "nome",
+        "cargo",
+        "lotacao",
+        "regional",
+        "vinculo",
+        "situacaoFuncional"
+
+    ];
+
+
+
+
+    campos.forEach(campo=>{
+
+
+        const elemento =
+        document.getElementById(campo);
+
+
+
+        if(elemento){
+
+
+            elemento.value =
+            dados[campo] || "";
+
+
+        }
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Converte datas retornadas pelo Apps Script
+ *
+ * Recebe:
+ * dd/MM/yyyy
+ *
+ * Retorna:
+ * yyyy-MM-dd
+ */
+function converterDataInput(data){
+
+
+
+    if(!data)
+        return "";
+
+
+
+    /*
+     * Caso já venha correto
+     */
+    if(data.includes("-"))
+        return data;
+
+
+
+    const partes =
+    data.split("/");
+
+
+
+    if(partes.length!==3)
+        return "";
+
+
+
+    return (
+
+        partes[2]
+        +
+        "-"
+        +
+        partes[1]
+        +
+        "-"
+        +
+        partes[0]
+
+    );
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Limpa somente os campos
+ * preenchidos automaticamente
+ */
+function limparDadosConsulta(){
+
+
+    const campos=[
+
+
+        "idProcesso",
+
+        "bm",
+
+        "nome",
+
+        "cargo",
+
+        "lotacao",
+
+        "regional",
+
+        "vinculo",
+
+        "situacaoFuncional",
+
+        "dataEncaminhamento",
+
+        "encaminhadoPara",
+
+        "status",
+
+        "motivacao",
+
+        "publicacaoDOM",
+
+        "observacoes"
+
+
+    ];
+
+
+
+
+    campos.forEach(id=>{
+
+
+        const campo =
+        document.getElementById(id);
+
+
+
+        if(campo)
+            campo.value="";
+
+
+
+    });
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * Exibe retorno da busca
+ */
+function mostrarStatusBusca(mensagem,sucesso){
+
+
+
+    const elemento =
+    document.getElementById(
+        "statusBusca"
+    );
+
+
+
+    if(!elemento)
+        return;
+
+
+
+    elemento.innerHTML =
+    mensagem;
+
+
+
+    elemento.style.marginTop =
+    "8px";
+
+
+
+    elemento.style.fontSize =
+    "13px";
+
+
+
+    elemento.style.fontWeight =
+    "600";
+
+
+
+
+    if(sucesso){
+
+
+        elemento.style.color =
+        "#34a853";
+
+
+    }
+    else{
+
+
+        elemento.style.color =
+        "#ea4335";
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Verifica se o retorno da API
+ * contém dados válidos
+ */
+function validarRetornoConsulta(resposta){
+
+
+
+    if(!resposta)
+        return false;
+
+
+
+    if(!resposta.ok)
+        return false;
+
+
+
+    if(!resposta.dados)
+        return false;
+
+
+
+    return true;
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Preenche o formulário usando
+ * retorno da API
+ *
+ * Função intermediária utilizada
+ * pelo eventos.html
+ */
+function preencherFormulario(dados){
+
+
+
+    preencherDadosProcesso(dados);
+
+
+    mostrarStatusBusca(
+        "Processo localizado.",
+        true
+    );
+
+
+}
+
+
+
+
+
+
+</script>

@@ -1,0 +1,674 @@
+<script>
+
+/**
+ * ============================================================
+ * eventos.html
+ * Eventos da interface
+ * ============================================================
+ */
+
+
+/**
+ * Inicialização da aplicação
+ */
+document.addEventListener(
+    "DOMContentLoaded",
+    iniciarSistema
+);
+
+
+
+async function iniciarSistema(){
+
+
+    try{
+
+
+        mostrarLoading(true);
+
+
+        await carregarListas();
+
+
+        await preencherDataAtual();
+
+        configurarLimiteDataRecebimento();
+
+
+        configurarEventos();
+
+
+        limparFormulario();
+
+
+
+    }
+    catch(e){
+
+
+        mostrarToast(
+            "Erro ao iniciar sistema: " + e.message,
+            "erro"
+        );
+
+
+    }
+    finally{
+
+
+        mostrarLoading(false);
+
+
+    }
+
+
+}
+
+/**
+ * Impede o preenchimento de uma data posterior a hoje.
+ */
+function configurarLimiteDataRecebimento(){
+
+    const campo =
+    document.getElementById("dataRecebimento");
+
+    if(!campo)
+        return;
+
+    const hoje =
+    new Date();
+
+    const ano =
+    hoje.getFullYear();
+
+    const mes =
+    String(hoje.getMonth() + 1).padStart(2, "0");
+
+    const dia =
+    String(hoje.getDate()).padStart(2, "0");
+
+    campo.max =
+    `${ano}-${mes}-${dia}`;
+
+}
+
+
+
+/**
+ * Configura todos os eventos
+ */
+function configurarEventos(){
+
+
+
+    /*
+     * Alteração do tipo de processo
+     */
+    document
+    .getElementById("processo")
+    .addEventListener(
+        "change",
+        alterarTipoProcesso
+    );
+
+
+
+
+
+    /*
+     * Botão buscar
+     */
+    document
+    .getElementById("btnBuscar")
+    .addEventListener(
+        "click",
+        executarBusca
+    );
+
+
+
+
+
+
+    /*
+     * Enter no PDG
+     */
+    document
+    .getElementById("pdg")
+    .addEventListener(
+        "keydown",
+        function(e){
+
+            if(e.key==="Enter"){
+
+                executarBusca();
+
+            }
+
+        }
+    );
+
+
+
+
+
+
+
+    /*
+     * Busca servidor pelo BM
+     */
+    document
+    .getElementById("bm")
+    .addEventListener(
+        "blur",
+        buscarBM
+    );
+
+
+
+
+
+
+
+
+    /*
+     * Cadastro
+     */
+    document
+    .getElementById("btnCadastrar")
+    .addEventListener(
+        "click",
+        enviarCadastro
+    );
+
+
+
+
+
+
+
+    /*
+     * Novo formulário
+     */
+    document
+    .getElementById("btnNovo")
+    .addEventListener(
+        "click",
+        limparFormulario
+    );
+
+
+
+}
+
+
+
+
+
+
+
+// Dentro de configurarEventos(), adicione o listener de 'change' ou chame na função existente:
+function alterarTipoProcesso(){
+
+    // Código existente da função...
+    const tipo = document.getElementById("processo").value;
+    const label = document.getElementById("labelBusca");
+    const campo = document.getElementById("pdg");
+
+    if(tipo === "SUSPAD"){
+        label.innerHTML = "ID Processo";
+        campo.placeholder = "Digite o ID do processo";
+    } else {
+        label.innerHTML = "Nº PDG";
+        campo.placeholder = "Digite o PDG";
+    }
+
+    // AQUI: Atualiza as opções de status conforme o tipo
+    atualizarOpcoesStatus();
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Executa pesquisa principal
+ */
+async function executarBusca(){
+
+
+
+    const tipo =
+    document
+    .getElementById("processo")
+    .value;
+
+
+
+    const valor =
+    document
+    .getElementById("pdg")
+    .value.trim();
+
+
+
+
+
+    if(!valor){
+
+
+        mostrarToast(
+            "Informe o valor para pesquisa.",
+            "erro"
+        );
+
+
+        return;
+
+    }
+
+
+
+
+
+    try{
+
+
+        mostrarLoading(true);
+
+
+
+        const resposta =
+        await API.buscarProcesso({
+
+            valor:valor,
+
+            tipo:tipo
+
+        });
+
+
+
+
+
+        if(!resposta.ok){
+
+
+            mostrarToast(
+                resposta.mensagem,
+                "erro"
+            );
+
+
+            return;
+
+        }
+
+
+
+
+
+
+        preencherFormulario(
+            resposta.dados
+        );
+
+
+
+        mostrarStatusBusca(
+            resposta.mensagem,
+            true
+        );
+
+
+
+
+    }
+    catch(e){
+
+
+        mostrarToast(
+            "Erro na consulta.",
+            "erro"
+        );
+
+
+    }
+    finally{
+
+
+        mostrarLoading(false);
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * Busca servidor pelo BM
+ */
+async function buscarBM(){
+
+
+    const bm =
+    document
+    .getElementById("bm")
+    .value.trim();
+
+
+
+    if(!bm)
+        return;
+
+
+
+    try{
+
+
+        mostrarLoading(true);
+
+
+
+        const resposta =
+        await API.buscarServidor(bm);
+
+
+
+
+        if(resposta.ok){
+
+
+            preencherDadosServidor(
+                resposta.dados
+            );
+
+
+        }
+        else{
+
+
+            mostrarToast(
+                resposta.mensagem,
+                "erro"
+            );
+
+
+        }
+
+
+    }
+    catch(e){
+
+
+        mostrarToast(
+            e.message,
+            "erro"
+        );
+
+
+    }
+    finally{
+
+
+        mostrarLoading(false);
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Carrega listas do formulário
+ */
+async function carregarListas(){
+
+    const listas = await API.carregarListas();
+
+    // Armazena o mapa de status na janela do navegador
+    window.mapaStatus = listas.statusPorTipo;
+
+    preencherSelect(
+        "processo",
+        listas.processos
+    );
+
+    preencherSelect(
+        "responsavel",
+        listas.responsaveis
+    );
+
+    window.motivacoes = listas.motivacoes || [];
+
+    // Atualiza os status conforme a opção inicial selecionada em processo
+    atualizarOpcoesStatus();
+
+}
+
+
+
+/**
+ * Atualiza o campo <select id="status"> com base no Tipo de Processo escolhido
+ */
+function atualizarOpcoesStatus(){
+
+    const tipoSelecionado = document.getElementById("processo").value;
+    const selectStatus = document.getElementById("status");
+
+    // Limpa as opções atuais
+    selectStatus.innerHTML = "";
+
+    // Pega as opções correspondentes ou array vazio se não achar
+    const opcoes = (window.mapaStatus && window.mapaStatus[tipoSelecionado]) || [];
+
+    // Adiciona a opção padrão/vazia
+    const optionPadrao = document.createElement("option");
+    optionPadrao.value = "";
+    optionPadrao.textContent = "Selecione o status...";
+    selectStatus.appendChild(optionPadrao);
+
+    // Preenche as opções do tipo de processo atual
+    opcoes.forEach(item => {
+        const option = document.createElement("option");
+        option.value = item;
+        option.textContent = item;
+        selectStatus.appendChild(option);
+    });
+
+}
+
+
+
+
+/**
+ * Preenche selects
+ */
+function preencherSelect(id,lista){
+
+
+
+    const select =
+    document.getElementById(id);
+
+
+
+    lista.forEach(item=>{
+
+
+        const option =
+        document.createElement("option");
+
+
+        option.value=item;
+
+
+        option.textContent=item;
+
+
+        select.appendChild(option);
+
+
+    });
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Define data atual
+ */
+async function preencherDataAtual(){
+
+
+    const data =
+    await API.hoje();
+
+
+
+    const campo =
+    document
+    .getElementById("dataRecebimento");
+
+
+
+    if(campo)
+        campo.value =
+        converterParaInputData(data);
+
+
+}
+
+
+
+
+
+
+/**
+ * Converte qualquer formato de data (dd/MM/yyyy, dd-MM-yyyy, etc.)
+ * para o formato yyyy-MM-dd exigido pelos campos <input type="date"> do HTML.
+ */
+function converterParaInputData(data){
+
+    if(!data) return "";
+
+    // Se já estiver no formato yyyy-MM-dd, retorna direto
+    if (typeof data === "string" && data.includes("-") && data.split("-")[0].length === 4) {
+        return data;
+    }
+
+    // Normaliza hífens para barras para quebrar em partes
+    const dataNormalizada = String(data).replace(/-/g, "/");
+    const partes = dataNormalizada.split("/");
+
+    if(partes.length !== 3) return "";
+
+    // Trata se já estiver como YYYY/MM/DD
+    if(partes[0].length === 4) {
+        return partes[0] + "-" + partes[1].padStart(2, '0') + "-" + partes[2].padStart(2, '0');
+    }
+
+    // Trata DD/MM/YYYY
+    return partes[2] + "-" + partes[1].padStart(2, '0') + "-" + partes[0].padStart(2, '0');
+
+}
+
+
+
+
+
+
+
+/**
+ * Preenche dados gerais
+ */
+function preencherFormulario(dados){
+
+    // Garante que o status dinâmico foi atualizado de acordo com o tipo de processo dos dados buscados
+    if(dados.processo) {
+        const selectProcesso = document.getElementById("processo");
+        if(selectProcesso) selectProcesso.value = dados.processo;
+        atualizarOpcoesStatus();
+    }
+
+    Object.keys(dados)
+    .forEach(campo=>{
+
+        const elemento = document.getElementById(campo);
+
+        if(elemento){
+            elemento.value = dados[campo] || "";
+        }
+
+    });
+
+}
+
+
+
+
+
+
+/**
+ * Preenche servidor
+ */
+function preencherDadosServidor(dados){
+
+
+    Object.keys(dados)
+    .forEach(campo=>{
+
+
+        const elemento =
+        document.getElementById(campo);
+
+
+
+        if(elemento){
+
+
+            elemento.value =
+            dados[campo] || "";
+
+        }
+
+
+    });
+
+
+}
+
+
+
+
+
+
+</script>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<base target="_top">
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Cadastro de Processos
+</title>
+
+
+<link
+href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+
+<link
+href="https://fonts.googleapis.com/icon?family=Material+Icons"
+rel="stylesheet">
+
+
+<?!= include("style"); ?>
+
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<header class="topo">
+
+
+<h1>
+Cadastro de Processo Administrativo
+</h1>
+
+
+<p>
+Sistema de Cadastro 
+</p>
+
+
+</header>
+
+
+
+<div class="card">
+
+
+<!-- Tipo processo -->
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+<label>
+Tipo do Processo
+</label>
+
+
+<select id="processo">
+<option value="">
+Selecione
+</option>
+</select>
+
+
+</div>
+
+
+<div class="campo">
+
+
+<label id="labelBusca">
+Nº PDG
+</label>
+
+
+<div style="display:flex; gap:10px">
+
+
+<input
+id="pdg"
+type="text"
+placeholder="Digite o PDG">
+
+
+<button
+id="btnBuscar"
+class="primary">
+
+Buscar
+
+</button>
+
+
+</div>
+
+
+<span id="statusBusca"></span>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- Identificação -->
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+ID Processo
+</label>
+
+
+<input
+id="idProcesso"
+type="text">
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Data Recebimento
+</label>
+
+
+<input
+id="dataRecebimento"
+type="date"
+max="">
+
+
+</div>
+
+
+</div>
+
+
+
+
+<!-- Dados servidor -->
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+BM
+</label>
+
+
+<input
+id="bm"
+type="text">
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Nome
+</label>
+
+
+<input
+id="nome"
+readonly>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+Cargo
+</label>
+
+
+<input
+id="cargo"
+readonly>
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Lotação
+</label>
+
+
+<input
+id="lotacao"
+readonly>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+Regional
+</label>
+
+
+<input
+id="regional"
+readonly>
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Vínculo
+</label>
+
+
+<input
+id="vinculo"
+readonly>
+
+
+</div>
+
+
+</div>
+
+
+
+
+<div class="grid-1">
+
+
+<div class="campo">
+
+
+<label>
+Situação Funcional
+</label>
+
+
+<input
+id="situacaoFuncional"
+readonly>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<!-- Tramitação -->
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+Data Encaminhamento
+</label>
+
+
+<input
+id="dataEncaminhamento"
+type="text"
+placeholder="dd/mm/aaaa">
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Encaminhado Para
+</label>
+
+
+<input
+id="encaminhadoPara">
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Resultado -->
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+Status
+</label>
+
+
+<select id="status">
+
+<option value="">
+Selecione
+</option>
+
+</select>
+
+
+</div>
+
+
+
+
+<div class="campo">
+
+
+<label>Responsável</label>
+
+
+<select id="responsavel">
+
+
+  <option value="">
+  Selecione
+  </option>
+
+
+</select>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Motivação -->
+
+
+<div class="grid-1">
+
+
+  <div class="campo">
+
+
+    <label>
+    Motivação
+    </label>
+
+
+
+    <div class="autocomplete">
+
+      <input
+      id="motivacao"
+      type="text"
+      autocomplete="off"
+      placeholder="Digite para pesquisar">
+
+      <div id="listaMotivacao"></div>
+
+    </div>
+
+    <div id="tagsMotivacao" class="tags-motivacao"></div>
+
+
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Publicação -->
+
+
+<div class="grid-2">
+
+
+<div class="campo">
+
+
+<label>
+Publicação DOM
+</label>
+
+
+<input
+id="publicacaoDOM">
+
+
+</div>
+
+
+
+<div class="campo">
+
+
+<label>
+Observações
+</label>
+
+
+<textarea
+id="observacoes"
+rows="3">
+</textarea>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- Botões -->
+
+
+<div class="acoes">
+
+
+<button
+
+id="btnNovo">
+
+Novo
+
+</button>
+
+
+
+
+<button
+
+id="btnCadastrar"
+
+class="primary">
+
+Cadastrar
+
+</button>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+<!-- Loading -->
+
+
+<div
+id="loading"
+class="loading">
+
+
+<div class="spinner"></div>
+
+
+</div>
+
+
+
+
+
+<!-- Toast -->
+
+
+<div id="toast">
+
+</div>
+
+
+
+
+
+<!-- Scripts separados -->
+
+
+<?!= include("api"); ?>
+
+<?!= include("ui"); ?>
+
+<?!= include("autocomplete"); ?>
+
+<?!= include("consultas"); ?>
+
+<?!= include("cadastro"); ?>
+
+<?!= include("eventos"); ?>
+
+
+
+</body>
+
+</html>

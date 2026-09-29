@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia: Conectando Google Apps Script ao GitHub</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #1a73e8;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; }
+        h3 { font-size: 1.4em; }
+        code {
+            background-color: #eee;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: "Courier New", Courier, monospace;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul, ol {
+            padding-left: 25px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        strong {
+            color: #111;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #ddd;
+            margin: 40px 0;
+        }
+        .header-meta {
+            background-color: #e3f2fd;
+            border-left: 5px solid #1a73e8;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+        }
+        .header-meta p { margin: 5px 0; }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Guia Completo: Conectando Google Apps Script ao GitHub com <code>clasp</code></h1>
+        <div class="header-meta">
+            <p><strong>Versão:</strong> 1.0</p>
+            <p><strong>Data:</strong> 13 de agosto de 2025</p>
+            <p><strong>Autor:</strong> Gemini (Assistente IA do Google)</p>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. Introdução</h2>
+            <p>Desenvolver projetos em Google Apps Script (GAS) diretamente no editor web pode ser limitante, especialmente para projetos complexos. A falta de um sistema de controle de versão robusto, ferramentas de colaboração e um editor de código mais poderoso são desafios comuns.</p>
+            <p>Este guia ensina como superar essas limitações conectando seus projetos GAS ao GitHub. Usaremos a ferramenta de linha de comando oficial do Google, chamada <strong><code>clasp</code></strong>, que atua como uma ponte entre seu ambiente de desenvolvimento local e os servidores do Google.</p>
+            
+            <h3>Vantagens desta Integração</h3>
+            <ul>
+                <li><strong>Controle de Versão com Git:</strong> Tenha um histórico completo de todas as alterações, reverta para versões anteriores e trabalhe com branches.</li>
+                <li><strong>Editor de Código Superior:</strong> Utilize editores como o Visual Studio Code, com recursos de autocompletar, formatação e detecção de erros.</li>
+                <li><strong>Colaboração Eficiente:</strong> Trabalhe em equipe usando o fluxo do GitHub com <em>pull requests</em> e revisão de código.</li>
+                <li><strong>Backup e Segurança:</strong> Mantenha uma cópia segura do seu código no GitHub.</li>
+            </ul>
+
+            <h3>Visão Geral do Processo</h3>
+            <ol>
+                <li><strong>Preparar o Ambiente:</strong> Instalar as ferramentas necessárias (Git, Node.js).</li>
+                <li><strong>Configurar o <code>clasp</code>:</strong> Instalar e autenticar a ferramenta que conecta seu computador ao GAS.</li>
+                <li><strong>Conectar o Projeto:</strong> Clonar um projeto existente do GAS para sua máquina local.</li>
+                <li><strong>Integrar com o GitHub:</strong> Iniciar um repositório Git e enviá-lo para o GitHub.</li>
+                <li><strong>Criar o arquivo gitignore:</strong> Executar o gitignoreclasp pessoal.</li>
+            </ol>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>2. Preparando o Ambiente (Pré-requisitos)</h2>
+            <p>Antes de começar, certifique-se de que seu computador possui as seguintes ferramentas.</p>
+            
+            <h3>2.1. Instalação do Git</h3>
+            <p>O Git é o sistema de controle de versão que rastreia as alterações no seu código.</p>
+            <p><strong>Como instalar:</strong> Baixe e instale a partir do <a href="https://git-scm.com/downloads" target="_blank" rel="noopener noreferrer">site oficial do Git</a>. Siga as instruções do instalador padrão.</p>
+
+            <h3>2.2. Instalação do Node.js e npm</h3>
+            <p>O <code>clasp</code> é um pacote do Node.js, então o Node.js é um requisito obrigatório. O <code>npm</code> (Node Package Manager) já vem incluído na instalação.</p>
+            <p><strong>Como instalar:</strong> Baixe e instale a versão <strong>LTS (Long-Term Support)</strong> do <a href="https://nodejs.org/" target="_blank" rel="noopener noreferrer">site oficial do Node.js</a>. Esta é a versão mais estável.</p>
+
+            <h3>2.3. Editor de Código (Recomendado: VS Code)</h3>
+            <p>Embora você possa usar qualquer editor de texto, o Visual Studio Code oferece uma experiência muito superior.</p>
+            <p><strong>Como instalar:</strong> Baixe e instale a partir do <a href="https://code.visualstudio.com/" target="_blank" rel="noopener noreferrer">site oficial do VS Code</a>.</p>
+
+            <h3>2.4. Conta no GitHub</h3>
+            <p>Você precisará de uma conta no GitHub para hospedar seus repositórios de código.</p>
+            <p><strong>Como criar:</strong> Cadastre-se gratuitamente no <a href="https://github.com/" target="_blank" rel="noopener noreferrer">site do GitHub</a>.</p>
+
+            <h3>2.5. Criar o gitignoreclasp</h3>
+            <p>É um arquivo de lote para automatizar a criação do documento gitignore.</p>
+            <p><strong>Como criar:</strong> Temos um HTML específico para isso que logo será referenciado</a>.</p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>3. Configurando o <code>clasp</code></h2>
+            <p>Com o ambiente pronto, o próximo passo é instalar e configurar a ponte entre sua máquina e o Google.</p>
+
+            <h3>3.1. Instalação via npm</h3>
+            <p>Abra seu terminal (Prompt de Comando, PowerShell ou Terminal) e execute o seguinte comando para instalar o <code>clasp</code> globalmente em sua máquina:</p>
+            <pre><code>npm install -g @google/clasp</code></pre>
+
+            <h3>3.2. Habilitação da API do Apps Script</h3>
+            <p>O <code>clasp</code> precisa de permissão para gerenciar seus projetos. Você deve habilitar a API em sua conta Google.</p>
+            <ol>
+                <li>Acesse o link: <a href="https://script.google.com/home/usersettings" target="_blank" rel="noopener noreferrer">https://script.google.com/home/usersettings</a></li>
+                <li>Encontre a opção <strong>"Google Apps Script API"</strong> e certifique-se de que ela está <strong>ativada</strong>.</li>
+            </ol>
+
+            <h3>3.3. Autenticação (<code>clasp login</code>)</h3>
+            <p>Ainda no terminal, execute o comando abaixo para conectar o <code>clasp</code> à sua Conta Google:</p>
+            <pre><code>clasp login</code></pre>
+            <p>Este comando abrirá uma janela do navegador, pedindo que você faça login e conceda as permissões necessárias para que o <code>clasp</code> gerencie seus arquivos do Google Apps Script.</p>
+        </section>
+        
+        <hr>
+
+        <section>
+            <h2>4. Conectando um Projeto e Integrando com GitHub</h2>
+            <p>Agora vamos trazer um projeto existente para sua máquina local e conectá-lo ao GitHub.</p>
+
+            <h3>4.1. Clonando um Projeto Existente</h3>
+            <ol>
+                <li><strong>Encontre o ID do seu Script:</strong> Abra o projeto no editor do Google Apps Script. A URL será semelhante a <code>https://script.google.com/d/SEU_ID_DO_SCRIPT/edit</code>. Copie o ID.</li>
+                <li><strong>Clone o Projeto:</strong> No terminal, navegue até a pasta onde deseja salvar seus projetos e execute:</li>
+            </ol>
+            <pre><code>clasp clone "SEU_ID_DO_SCRIPT_AQUI"</code></pre>
+            <p>O <code>clasp</code> criará uma pasta com o nome do projeto e baixará todos os seus arquivos <code>.gs</code> e <code>.html</code>, além do manifesto <code>appsscript.json</code>.</p>
+
+            <h3>4.2. Iniciando o Repositório Git</h3>
+            <ol>
+                <li>Navegue para dentro da pasta recém-criada:</li>
+                <pre><code>cd "Nome do Projeto"</code></pre>
+                <li>Inicie um repositório Git local:</li>
+                <pre><code>git init</code></pre>
+            </ol>
+            
+            <h3>4.3. Criando o <code>.gitignore</code></h3>
+            <p>É fundamental instruir o Git a ignorar arquivos sensíveis ou específicos do ambiente. Crie um arquivo chamado <code>.gitignore</code> na raiz do projeto com o seguinte conteúdo:</p>
+            <pre><code># Arquivo de configuração do Clasp com credenciais
+.clasp.json
+
+# Pasta de módulos do Node.js (se aplicável)
+node_modules/</code></pre>
+            
+            <h3>4.4. Conectando ao GitHub</h3>
+            <ol>
+                <li><strong>Crie um Repositório no GitHub:</strong> Vá ao site do GitHub e crie um novo repositório (pode ser público ou privado). <strong>Não</strong> o inicialize com um arquivo <code>README</code> ou <code>.gitignore</code> a partir do site.</li>
+                <li><strong>Conecte e Envie:</strong> Volte ao seu terminal e execute os comandos abaixo, substituindo <code>SUA_URL_DO_GITHUB.git</code> pela URL que o GitHub forneceu.</li>
+            </ol>
+            <pre><code># Conecta seu repositório local ao repositório remoto no GitHub
+git remote add origin SUA_URL_DO_GITHUB.git
+
+# Adiciona todos os arquivos para serem rastreados
+git add .
+
+# Cria o primeiro "snapshot" (commit) do seu projeto
+git commit -m "Primeiro commit: importação do projeto Apps Script"
+
+# Envia o código para o GitHub
+git push -u origin master</code></pre>
+            <p><em>(Nota: Sua branch principal pode se chamar <code>main</code> em vez de <code>master</code>)</em>.</p>
+        </section>
+        
+        <hr>
+        
+        <section>
+            <h2>5. O Fluxo de Trabalho Diário</h2>
+            <p>Seu ambiente está pronto! Agora, seu processo de desenvolvimento será o seguinte:</p>
+            <ol>
+                <li><strong>Editar Código:</strong> Faça suas alterações nos arquivos do projeto localmente, usando o VS Code.</li>
+                <li><strong>Atualizar Localmente (se necessário):</strong> Se você ou um colega fizer uma alteração diretamente no editor web, puxe-a para sua máquina antes de continuar o trabalho para evitar conflitos:
+                    <pre><code>clasp pull</code></pre>
+                </li>
+                <li><strong>Testar no Google:</strong> Para enviar suas alterações para o ambiente do Apps Script e testá-las, use o comando:
+                    <pre><code>clasp push</code></pre>
+                </li>
+                <li><strong>Salvar no GitHub:</strong> Após confirmar que suas alterações funcionam, salve-as permanentemente no GitHub:
+                    <pre><code>git add .
+git commit -m "Mensagem descritiva da alteração"
+git push</code></pre>
+                </li>
+            </ol>
+        </section>
+        
+        <hr>
+        
+        <section>
+            <h2>6. Conclusão</h2>
+            <p>Parabéns! Você integrou com sucesso seu projeto Google Apps Script a um fluxo de trabalho de desenvolvimento profissional com Git e GitHub. Essa configuração inicial exige alguns passos, mas os benefícios em organização, segurança e eficiência para seus projetos futuros são imensos.</p>
+        </section>
+
+    </main>
+
+</body>
+</html>

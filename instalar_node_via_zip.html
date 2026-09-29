@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalando o Node.js no Windows a partir do Binário Autônomo (.zip)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 2em;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d14;
+        }
+        pre {
+            background-color: #eef;
+            padding: 1em;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .note {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1em;
+            margin: 1em 0;
+            border-radius: 4px;
+        }
+        ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Instalando o Node.js no Windows a partir do Binário Autônomo (.zip)</h1>
+
+    <p>Esta guia passo a passo explica como instalar o Node.js no Windows usando o arquivo binário autônomo (<code>.zip</code>). Este método é ideal quando você não possui permissões de administrador ou prefere ter várias versões do Node.js instaladas em seu sistema.</p>
+
+    <h2>Passo 1: Baixar os Arquivos Binários</h2>
+    <p>Para começar, baixe o pacote binário autônomo diretamente do site oficial do Node.js.</p>
+    <ol>
+        <li>Acesse a página de download do Node.js: <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a></li>
+        <li>Na seção **Other downloads**, localize a sua arquitetura de sistema (geralmente <strong>64-bit</strong>) e baixe o arquivo <strong>Windows Binary (.zip)</strong>.</li>
+    </ol>
+
+    <h2>Passo 2: Extrair e Organizar os Arquivos</h2>
+    <p>Depois de baixar o arquivo, extraia-o para um local de fácil acesso e onde você deseja manter a sua instalação do Node.js.</p>
+    <ol>
+        <li>Crie uma pasta em um local de sua preferência, por exemplo, <code>C:\dev\nodejs</code>.</li>
+        <li>Extraia o conteúdo do arquivo <code>.zip</code> para essa nova pasta.</li>
+    </ol>
+    <p>A pasta extraída conterá os executáveis <code>node.exe</code> e <code>npm</code>, além de outros arquivos necessários.</p>
+
+    <h2>Passo 3: Configurar os Diretórios para Módulos Globais e Cache</h2>
+    <p>Para evitar problemas de permissão e manter seus módulos globais organizados, é recomendado criar pastas dedicadas para o npm. O npm é o gerenciador de pacotes do Node.js.</p>
+
+    <ol>
+        <li>Dentro da pasta onde você extraiu o Node.js (por exemplo, <code>C:\dev\nodejs\node-v20.12.2-win-x64</code>), crie duas novas pastas:
+            <ul>
+                <li><strong><code>npm-global</code></strong> (para os módulos instalados globalmente com <code>npm install -g</code>)</li>
+                <li><strong><code>npm-cache</code></strong> (para o cache do npm)</li>
+            </ul>
+        </li>
+        <li>Em seguida, abra o **Prompt de Comando** (cmd) ou **PowerShell** e use os seguintes comandos para configurar o npm, substituindo o caminho pelo seu:</li>
+        <pre><code>npm config set prefix "C:\dev\nodejs\node-v20.12.2-win-x64\npm-global"
+npm config set cache "C:\dev\nodejs\node-v20.12.2-win-x64\npm-cache"</code></pre>
+    </ol>
+
+    <h2>Passo 4: Adicionar os Caminhos ao PATH do Sistema</h2>
+    <p>Para que você possa usar os comandos <code>node</code> e <code>npm</code> de qualquer lugar no seu terminal, é necessário adicionar os caminhos das pastas do Node.js e dos módulos globais à variável de ambiente **PATH** do seu sistema.</p>
+
+    <ol>
+        <li>Abra o menu Iniciar e digite <strong>"Variáveis de Ambiente"</strong>, depois clique em <strong>"Editar as variáveis de ambiente do sistema"</strong>.</li>
+        <li>Na janela que se abrir, clique no botão <strong>"Variáveis de Ambiente..."</strong>.</li>
+        <li>Na seção **"Variáveis de usuário"**, encontre a variável chamada <code>Path</code> e clique em **"Editar"**.</li>
+        <li>Clique em **"Novo"** e adicione o caminho completo para a pasta onde você extraiu o Node.js. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64</code>.</li>
+        <li>Clique em **"Novo"** novamente e adicione o caminho para a pasta **<code>npm-global</code>** que você criou. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64\npm-global</code>.</li>
+        <li>Clique em **"OK"** para fechar todas as janelas.</li>
+    </ol>
+
+    <h2>Passo 5: Verificar a Instalação</h2>
+    <p>Para confirmar se tudo foi configurado corretamente, abra um **novo** Prompt de Comando (ou PowerShell) e execute os seguintes comandos:</p>
+    <pre><code>node -v
+npm -v</code></pre>
+    <p>Se a instalação foi bem-sucedida, os comandos retornarão as versões do Node.js e do npm.</p>
+    <p>Para testar se os módulos globais funcionam, instale um e verifique sua versão:</p>
+    <pre><code>npm install -g nodemon
+nodemon -v</code></pre>
+    <p>Isso deve retornar a versão do Nodemon, indicando que a instalação global está funcionando corretamente.</p>
+
+</div>
+
+</body>
+</html>

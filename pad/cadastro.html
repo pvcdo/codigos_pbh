@@ -1,0 +1,408 @@
+<script>
+
+/**
+ * ============================================================
+ * cadastro.html
+ * Controle do envio do formulário
+ * ============================================================
+ */
+
+
+/**
+ * Função chamada pelo botão Cadastrar
+ */
+async function enviarCadastro(){
+
+
+    try{
+
+
+        const dados =
+        coletarDadosFormulario();
+
+
+
+        const validacao =
+        validarFormulario(dados);
+
+
+
+        if(!validacao.ok){
+
+
+            mostrarToast(
+                validacao.mensagem,
+                "erro"
+            );
+
+
+            return;
+
+        }
+
+
+
+
+
+
+        mostrarLoading(true);
+
+
+
+        const resposta =
+        await API.cadastrarProcesso(dados);
+
+
+
+
+
+
+        if(resposta.ok){
+
+
+            mostrarToast(
+                resposta.mensagem,
+                "sucesso"
+            );
+
+
+
+            limparFormulario();
+
+
+
+        }
+        else{
+
+
+            mostrarToast(
+                resposta.mensagem,
+                "erro"
+            );
+
+
+        }
+
+
+
+
+    }
+    catch(e){
+
+
+        mostrarToast(
+            "Erro ao cadastrar: " + e.message,
+            "erro"
+        );
+
+
+    }
+    finally{
+
+
+        mostrarLoading(false);
+
+
+    }
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Monta o objeto enviado ao Apps Script
+ */
+function coletarDadosFormulario(){
+
+
+
+    return {
+
+
+        processo:
+        valorCampo("processo"),
+
+
+
+        pdg:
+        valorCampo("pdg"),
+
+
+
+        idProcesso:
+        valorCampo("idProcesso"),
+
+
+
+        dataRecebimento:
+        converterDataServidor(
+            valorCampo("dataRecebimento")
+        ),
+
+
+
+
+        bm:
+        valorCampo("bm"),
+
+
+
+        nome:
+        valorCampo("nome"),
+
+
+
+        cargo:
+        valorCampo("cargo"),
+
+
+
+        lotacao:
+        valorCampo("lotacao"),
+
+
+
+        regional:
+        valorCampo("regional"),
+
+
+
+        vinculo:
+        valorCampo("vinculo"),
+
+
+
+        situacaoFuncional:
+        valorCampo("situacaoFuncional"),
+
+
+
+
+
+        dataEncaminhamento:
+        converterDataServidor(
+            valorCampo("dataEncaminhamento")
+        ),
+
+
+
+
+        encaminhadoPara:
+        valorCampo("encaminhadoPara"),
+
+
+
+
+
+        status:
+        valorCampo("status"),
+
+
+
+
+
+        motivacao:
+        obterValorMotivacao(),
+
+
+
+
+
+        responsavel:
+        valorCampo("responsavel"),
+
+
+
+
+
+        publicacaoDOM:
+        valorCampo("publicacaoDOM"),
+
+
+
+
+
+        observacoes:
+        valorCampo("observacoes")
+
+
+
+    };
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Valida campos obrigatórios
+ */
+function validarFormulario(dados){
+
+    // Lista base de campos obrigatórios
+    let obrigatorios = [
+        {
+            campo: "processo",
+            nome: "Tipo do processo"
+        },
+        {
+            campo: "pdg",
+            nome: dados.processo === "SUSPAD" ? "ID Processo" : "PDG"
+        },
+        {
+            campo: "nome",
+            nome: "Servidor"
+        },
+        {
+            campo: "status",
+            nome: "Status"
+        },
+        {
+            campo: "motivacao",
+            nome: "Motivação"
+        },
+        {
+            campo: "responsavel",
+            nome: "Responsável"
+        }
+    ];
+
+    // Se o tipo de processo for PPA, remove o campo "nome" da validação
+    if (dados.processo === "PPA") {
+        obrigatorios = obrigatorios.filter(item => item.campo !== "nome");
+    }
+
+    // Executa a verificação dos campos obrigatórios
+    for (const item of obrigatorios) {
+
+        if (!dados[item.campo]) {
+
+            return {
+                ok: false,
+                mensagem: "Informe: " + item.nome
+            };
+
+        }
+
+    }
+
+    return {
+        ok: true
+    };
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Recupera valor do campo
+ */
+function valorCampo(id){
+
+
+
+    const elemento =
+    document.getElementById(id);
+
+
+
+    if(!elemento)
+        return "";
+
+
+
+    return elemento.value.trim();
+
+
+
+}
+
+
+
+/**
+ * Aceita entradas com "-" (2026-07-22) ou com "/" (22/07/2026)
+ * e formata sempre como dd/MM/yyyy para ser salvo na planilha.
+ */
+function converterDataServidor(data){
+
+    if(!data) return "";
+
+    const dataNormalizada = String(data).replace(/-/g, "/");
+    const partes = dataNormalizada.split("/");
+
+    if(partes.length !== 3) return "";
+
+    // Se a data for YYYY/MM/DD (vinda de um <input type="date">)
+    if(partes[0].length === 4) {
+        return partes[2] + "/" + partes[1] + "/" + partes[0];
+    }
+
+    // Se for DD/MM/YYYY
+    return partes[0] + "/" + partes[1] + "/" + partes[2];
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Verifica se existe processo carregado
+ */
+function possuiServidor(){
+
+
+    return Boolean(
+
+        valorCampo("nome")
+
+    );
+
+
+}
+
+
+
+
+
+
+
+/**
+ * Confirma antes de gravar
+ */
+function confirmarCadastro(){
+
+
+    return confirm(
+
+        "Deseja realmente cadastrar este processo?"
+
+    );
+
+
+}
+
+
+
+</script>

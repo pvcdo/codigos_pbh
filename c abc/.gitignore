@@ -1,0 +1,6 @@
+# Arquivo de configuração do Clasp com credenciais 
+.clasp.json 
+appsscript.json 
+ 
+# Pasta de módulos do Node.js (se aplicável) 
+node_modules/ 

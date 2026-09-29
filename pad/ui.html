@@ -1,0 +1,535 @@
+<script>
+
+/**
+ * ============================================================
+ * ui.html
+ * Controle visual da aplicação
+ * ============================================================
+ */
+
+
+/**
+ * Mostra ou esconde o carregamento
+ */
+function mostrarLoading(estado){
+
+
+    const loading =
+    document.getElementById(
+        "loading"
+    );
+
+
+
+    if(!loading)
+        return;
+
+
+
+    loading.style.display =
+    estado
+    ? "flex"
+    : "none";
+
+
+}
+
+
+
+
+
+
+
+
+/**
+ * Exibe mensagens na tela
+ *
+ * tipo:
+ * sucesso
+ * erro
+ */
+function mostrarToast(mensagem,tipo="sucesso"){
+
+
+
+    const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+
+    if(!toast)
+        return;
+
+
+
+
+
+    toast.textContent =
+    mensagem;
+
+
+
+
+
+    toast.className =
+    "";
+
+
+
+
+
+    if(tipo==="erro"){
+
+
+        toast.classList.add(
+            "toast-error"
+        );
+
+
+    }
+    else{
+
+
+        toast.classList.add(
+            "toast-success"
+        );
+
+
+    }
+
+
+
+
+
+
+    toast.style.display =
+    "block";
+
+
+
+
+
+    setTimeout(()=>{
+
+
+        toast.style.display =
+        "none";
+
+
+    },4000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Limpa todo formulário
+ */
+function limparFormulario(){
+
+
+
+    const campos=[
+
+
+
+        "pdg",
+
+        "idProcesso",
+
+        "dataRecebimento",
+
+        "bm",
+
+        "nome",
+
+        "cargo",
+
+        "lotacao",
+
+        "regional",
+
+        "vinculo",
+
+        "situacaoFuncional",
+
+        "dataEncaminhamento",
+
+        "encaminhadoPara",
+
+        "status",
+
+        "motivacao",
+
+        "responsavel",
+
+        "publicacaoDOM",
+
+        "observacoes"
+
+
+    ];
+
+
+
+
+
+
+
+    campos.forEach(id=>{
+
+
+        const campo =
+        document.getElementById(id);
+
+
+
+        if(!campo)
+            return;
+
+
+
+        campo.value="";
+
+
+
+    });
+
+    if(typeof limparMotivacoesSelecionadas === "function"){
+        limparMotivacoesSelecionadas();
+    }
+
+
+    const processo =
+    document.getElementById(
+        "processo"
+    );
+
+
+
+    if(processo){
+
+        processo.selectedIndex=0;
+
+    }
+
+
+
+
+
+    limparDadosConsulta();
+
+
+
+    limparSugestoes();
+
+
+
+    mostrarStatusBusca(
+        "",
+        true
+    );
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+/**
+ * Limpa apenas campos readonly
+ */
+function limparCamposServidor(){
+
+
+
+    const campos=[
+
+
+        "nome",
+
+        "cargo",
+
+        "lotacao",
+
+        "regional",
+
+        "vinculo",
+
+        "situacaoFuncional"
+
+
+    ];
+
+
+
+
+    campos.forEach(id=>{
+
+
+        const campo =
+        document.getElementById(id);
+
+
+
+        if(campo)
+            campo.value="";
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Ativa/desativa formulário
+ */
+function bloquearFormulario(bloquear){
+
+
+
+    const campos =
+    document.querySelectorAll(
+        "input, select, textarea, button"
+    );
+
+
+
+
+
+    campos.forEach(campo=>{
+
+
+        campo.disabled =
+        bloquear;
+
+
+    });
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Destaca um campo com erro
+ */
+function marcarErro(id){
+
+
+
+    const campo =
+    document.getElementById(id);
+
+
+
+    if(!campo)
+        return;
+
+
+
+
+
+    campo.style.border =
+    "2px solid #ea4335";
+
+
+
+
+
+    campo.focus();
+
+
+
+
+
+
+    setTimeout(()=>{
+
+
+        campo.style.border =
+        "";
+
+
+    },3000);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Remove destaque de erro
+ */
+function limparErro(id){
+
+
+
+    const campo =
+    document.getElementById(id);
+
+
+
+    if(campo){
+
+
+        campo.style.border="";
+
+
+    }
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Mostra mensagem abaixo do botão
+ */
+function mostrarMensagemStatus(
+    mensagem,
+    sucesso=true
+){
+
+
+
+    let elemento =
+    document.getElementById(
+        "mensagemSistema"
+    );
+
+
+
+    if(!elemento){
+
+
+        elemento =
+        document.createElement(
+            "div"
+        );
+
+
+        elemento.id =
+        "mensagemSistema";
+
+
+
+        document
+        .querySelector(".acoes")
+        .appendChild(
+            elemento
+        );
+
+
+    }
+
+
+
+
+
+    elemento.textContent =
+    mensagem;
+
+
+
+
+
+    elemento.style.marginTop =
+    "15px";
+
+
+
+
+
+    elemento.style.fontWeight =
+    "600";
+
+
+
+
+
+    elemento.style.color =
+    sucesso
+    ? "#34a853"
+    : "#ea4335";
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+/**
+ * Confirma ação do usuário
+ */
+function confirmarAcao(mensagem){
+
+
+    return window.confirm(
+        mensagem
+    );
+
+
+}
+
+
+
+
+
+
+</script>
