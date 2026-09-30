@@ -1,12 +1,23 @@
 function doGet(e) {
-  return ContentService.createTextOutput(exportarEEncriptarCSV())
+  
+  var action = e && e.parameter.action ? e.parameter.action : null;
+  var aba = e && e.parameter.aba ? e.parameter.aba : null;
+
+  if (action === 'export_csv'){
+    if(aba === null){
+      throw Error('Sem parâmetro aba')
+    }
+    return ContentService.createTextOutput(exportarEEncriptarCSV(aba))
+  }else if(action === 'exportar_json'){
+    exportarJson(action)
+  }else if(action === null){
+    throw Error('Sem parâmetro action')
+  }
 }
 
-function exportarEEncriptarCSV() {
+function exportarEEncriptarCSV(aba) {
 
-  console.log('secret_crypto e iv_crypto devem ser configurados nas propriedades do script (Project Properties)')
-
-  const pg_dados = 'Registros'
+  const pg_dados = aba
 
   const props = PropertiesService.getScriptProperties()
 

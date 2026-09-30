@@ -75,7 +75,7 @@ def processar_todas_as_planilhas():
             csv_resultado = decriptografar_csv(texto_resposta, KEY, IV)
 
             # Salvar no diretório
-            caminho_arquivo_csv = os.path.join(diretorio_atual,'planilhas', nome_arquivo)
+            caminho_arquivo_csv = os.path.join('F:\COORDENAÇÃO DE CADM\Inteligência\Paulo\Planilhas GEASF\planilhas', nome_arquivo)
             with open(caminho_arquivo_csv, "w", encoding="utf-8") as f:
                 f.write(csv_resultado)
 
