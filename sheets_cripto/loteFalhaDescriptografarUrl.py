@@ -15,9 +15,8 @@ except ImportError:
     pass
 
 # Importa a lista de configurações do arquivo separado
-from config_planilhas import PLANILHAS_CONFIG
-
-PLANILHAS_CONFIG_FALHA = []
+from config_planilhas_falha import PLANILHAS_CONFIG_FALHA
+NOVAS_FALHAS = []
 
 def salvar_arquivo_config_falha(caminho_arquivo: str, lista_falhas: list):
     """Reescreve o arquivo config_planilhas_falha.py com o array atualizado de falhas."""
@@ -25,6 +24,7 @@ def salvar_arquivo_config_falha(caminho_arquivo: str, lista_falhas: list):
         f.write("# config_planilhas_falha.py\n\n")
         f.write("# Arquivo gerado/atualizado automaticamente pela execução do lote\n")
         f.write("PLANILHAS_CONFIG_FALHA = " + json.dumps(lista_falhas, indent=4, ensure_ascii=False) + "\n")
+
 
 def decriptografar_csv(conteudo_base64: str, chave: bytes, iv: bytes) -> str:
     """Decodifica a string Base64 e descriptografa via AES-256-CBC."""
@@ -58,7 +58,7 @@ def processar_todas_as_planilhas():
     # Identificação única por Data e Hora no nome do arquivo
     data_inicio = datetime.now()
     timestamp_nome = data_inicio.strftime("%Y-%m-%d_%H-%M-%S")
-    caminho_log = os.path.join(diretorio_logs, f"log_execucao_{timestamp_nome}.txt")
+    caminho_log = os.path.join(diretorio_logs, f"log_execucao_falhas_{timestamp_nome}.txt")
 
     def registrar_log(mensagem: str):
         """Imprime a mensagem no console e salva no arquivo de log simultaneamente."""
@@ -70,8 +70,12 @@ def processar_todas_as_planilhas():
     registrar_log("=" * 65)
     registrar_log("LOG DE EXECUÇÃO - EXTRAÇÃO DE PLANILHAS CRIPTOGRAFADAS")
     registrar_log(f"Data/Hora de Início: {data_inicio.strftime('%d/%m/%Y %H:%M:%S')}")
-    registrar_log(f"Total de planilhas na fila: {len(PLANILHAS_CONFIG)}")
+    registrar_log(f"Total de planilhas na fila: {len(PLANILHAS_CONFIG_FALHA)}")
     registrar_log("=" * 65)
+
+    if len(PLANILHAS_CONFIG_FALHA) == 0:
+        registrar_log("Nenhuma planilha encontrada na lista de falhas. Encerrando o processo.")
+        return
 
     # ==========================================================================
     # 2. CARREGAMENTO DE CHAVES E PROCESSAMENTO
@@ -90,11 +94,11 @@ def processar_todas_as_planilhas():
     sucessos = 0
     falhas = 0
 
-    for idx, item in enumerate(PLANILHAS_CONFIG, start=1):
+    for idx, item in enumerate(PLANILHAS_CONFIG_FALHA, start=1):
         nome_arquivo = item.get("nome_arquivo")
         url_api = item.get("url")
 
-        registrar_log(f"\n[{idx}/{len(PLANILHAS_CONFIG)}] Processando: '{nome_arquivo}'")
+        registrar_log(f"\n[{idx}/{len(PLANILHAS_CONFIG_FALHA)}] Processando: '{nome_arquivo}'")
         registrar_log(f" 🔗 URL: {url_api}")
 
         try:
@@ -128,13 +132,13 @@ def processar_todas_as_planilhas():
 
         except Exception as e:
             registrar_log(f" ❌ FALHA ao processar '{nome_arquivo}': {e}")
-            PLANILHAS_CONFIG_FALHA.append(item)
+            NOVAS_FALHAS.append(item)
             falhas += 1
 
     # ==========================================================================
     # 3. RESUMO DA EXECUÇÃO
     # ==========================================================================
-    salvar_arquivo_config_falha(caminho_config_falha, PLANILHAS_CONFIG_FALHA)
+    salvar_arquivo_config_falha(caminho_config_falha, NOVAS_FALHAS)
     data_fim = datetime.now()
     duracao = data_fim - data_inicio
 

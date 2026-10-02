@@ -1,6 +1,7 @@
 # config_planilhas.py
 
 # Lista com todas as planilhas a serem processadas
+
 PLANILHAS_CONFIG = [
     {
         "nome_arquivo": "fAcolhimento.csv",
