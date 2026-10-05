@@ -391,4 +391,23 @@
 2026-02-25 17:01:35.587 -03 [31432] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
 2026-02-25 17:01:35.587 -03 [31432] LOG:  terminando quaisquer outros processos servidor ativos
 2026-02-25 17:01:35.595 -03 [31432] LOG:  pedido de desligamento rápido foi recebido
+^C2026-10-05 11:57:23.708 -03 [21200] LOG:  iniciando PostgreSQL 18.2 on x86_64-windows, compiled by msvc-19.44.35222, 64-bit
+2026-10-05 11:57:23.713 -03 [21200] LOG:  escutando no endereço IPv6 "::", porta 5432
+2026-10-05 11:57:23.713 -03 [21200] LOG:  escutando no endereço IPv4 "0.0.0.0", porta 5432
+2026-10-05 11:57:25.092 -03 [21044] LOG:  sistema de banco de dados foi interrompido; última execução em 2026-02-25 16:25:22 -03
+2026-10-05 11:57:35.154 -03 [21044] LOG:  não foi possível abrir o arquivo "./log_servidor.txt": violação de compartilhamento
+2026-10-05 11:57:35.154 -03 [21044] DETALHE:  Continuar tentando por 30 segundos.
+2026-10-05 11:57:35.154 -03 [21044] DICA:  Você pode ter programa de antivírus, cópia de segurança ou similares interferindo com o sistema de banco de dados.
+2026-10-05 11:58:01.773 -03 [21044] LOG:  syncing data directory (fsync), elapsed time: 36.67 s, current path: ./pg_commit_ts
+2026-10-05 11:58:01.875 -03 [21044] LOG:  sistema de banco de dados não foi desligado corretamente; recuperação automática está em andamento
+2026-10-05 11:58:02.025 -03 [21044] LOG:  redo inicia em 0/18984A8
+2026-10-05 11:58:02.040 -03 [21044] LOG:  comprimento de registro inválido em 0/18984E0: esperado pelo menos 24, obtido 0
+2026-10-05 11:58:02.047 -03 [21044] LOG:  refazer feito em 0/18984A8 uso do sistema: CPU: usuário: 0.00 s, sistema: 0.00 s, decorrido: 0.05 s
+2026-10-05 11:58:02.174 -03 [18840] LOG:  checkpoint starting: end-of-recovery immediate wait
+2026-10-05 11:58:02.249 -03 [18840] LOG:  checkpoint complete: wrote 0 buffers (0.0%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.010 s, sync=0.013 s, total=0.183 s; sync files=2, longest=0.009 s, average=0.007 s; distance=0 kB, estimate=0 kB; lsn=0/18984E0, redo lsn=0/18984E0
+2026-10-05 11:58:02.335 -03 [21200] LOG:  sistema de banco de dados está pronto para aceitar conexões
+2026-10-05 12:00:38.900 -03 [21200] LOG:  processo trabalhador em segundo plano "logical replication launcher" (PID 14240) foi terminado pela exceção 0xC000013A
+2026-10-05 12:00:38.900 -03 [21200] DICA:  Veja o arquivo de cabeçalho C "ntstatus.h" para obter uma descrição do valor hexadecimal.
+2026-10-05 12:00:38.901 -03 [21200] LOG:  terminando quaisquer outros processos servidor ativos
+2026-10-05 12:00:38.924 -03 [21200] LOG:  todos os processos servidor foram terminados; reinicializando
 ^C

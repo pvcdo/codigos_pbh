@@ -75,7 +75,7 @@ df = df.map(limpar_texto)
 
 print("Exportando para o arquivo Excel...")
 # Salva direto em um arquivo Excel na sua Área de Trabalho
-df.to_csv(r"C:\usuarios\pr114067\Desktop\GEASF\Relatório Arte\arterh-sql.csv", index=False, header=False)
+df.to_csv(r"\\smsa_fs\GGCAT\COORDENAÇÃO DE CADM\Inteligência\Paulo\Relatorio Arte GEASF\arterh-sql.csv", index=False, header=False)
 
 print("🚀 Processo concluído! Dados exportados com sucesso!")
 

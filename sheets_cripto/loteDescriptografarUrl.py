@@ -45,7 +45,7 @@ def processar_todas_as_planilhas():
     # ==========================================================================
     # 1. CONFIGURAÇÃO DE DIRETÓRIOS E REGISTRO DE LOG
     # ==========================================================================
-    diretorio_base = 'F:/COORDENAÇÃO DE CADM/Inteligência/Paulo/Planilhas GEASF'
+    diretorio_base = r'\\smsa_fs/GGCAT/COORDENAÇÃO DE CADM/Inteligência/Paulo/Planilhas GEASF'
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
     diretorio_planilhas = os.path.join(diretorio_base, 'planilhas')
     diretorio_logs = os.path.join(diretorio_base, 'logs')
