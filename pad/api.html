@@ -10,6 +10,22 @@
 
 const API = {
 
+    listarProcessos(dados){
+
+        return new Promise((resolve,reject)=>{
+
+            google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .listarProcessos(
+                dados.pagina,
+                dados.tamanhoPagina,
+                dados.filtro
+            );
+
+        });
+
+    },
 
     /**
      * Busca processo pelo PDG ou ID
@@ -116,6 +132,19 @@ const API = {
 
         });
 
+
+    },
+
+    atualizarProcesso(dados, linhaBase){
+
+        return new Promise((resolve,reject)=>{
+
+            google.script.run
+            .withSuccessHandler(resolve)
+            .withFailureHandler(reject)
+            .atualizarProcesso(dados, linhaBase);
+
+        });
 
     },
 

@@ -48,18 +48,60 @@ function cadastrarProcesso(dados){
 }
 
 /**
+ * Atualiza o processo existente na linha informada.
+ */
+function atualizarProcesso(dados, linhaBase){
+
+  try{
+
+    const linha = Number(linhaBase);
+    const sh = getBase();
+
+    if(!Number.isInteger(linha) || linha < 3 || linha > sh.getLastRow())
+      return erro("O processo selecionado não está mais disponível.");
+
+    if(vazio(sh.getRange(linha, 1).getValue()))
+      return erro("O processo selecionado não está mais disponível.");
+
+    const validacao = validarCadastro(dados);
+
+    if(!validacao.ok)
+      return validacao;
+
+    const registro = montarLinhaBase(dados);
+
+    sh.getRange(linha, 1, 1, registro.length).setValues([registro]);
+
+    return sucesso("Processo atualizado com sucesso!");
+
+  }catch(e){
+
+    Logger.log(e);
+    return erro("Erro ao atualizar o processo.\n\n" + e.message);
+
+  }
+
+}
+
+/**
  * Busca a primeira linha realmente em branco na Coluna A
  */
 function getPrimeiraLinhaLivre(sh) {
-  const valores = sh.getRange("A:A").getValues();
-  
+  const primeiraLinha = 3;
+  const ultimaLinha = sh.getLastRow();
+
+  if(ultimaLinha < primeiraLinha)
+    return primeiraLinha;
+
+  const valores = sh.getRange(primeiraLinha, 1, ultimaLinha - primeiraLinha + 1, 1).getValues();
+
   for (let i = 0; i < valores.length; i++) {
     if (valores[i][0] === "" || valores[i][0] === null || valores[i][0] === undefined) {
-      return i + 1;
+      return primeiraLinha + i;
     }
   }
   
-  return valores.length + 1;
+  return ultimaLinha + 1;
 }
 
 /**
@@ -151,7 +193,10 @@ function validarCadastro(d){
   if(vazio(d.processo))
     return erro("Informe o tipo do processo.");
 
-  if(vazio(d.pdg))
+  if(String(d.processo).trim().toUpperCase() === "SUSPAD" && vazio(d.idProcesso))
+    return erro("Informe o ID do processo.");
+
+  if(String(d.processo).trim().toUpperCase() !== "SUSPAD" && vazio(d.pdg))
     return erro("Informe o número do PDG.");
 
   if(vazio(d.dataRecebimento))

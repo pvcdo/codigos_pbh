@@ -16,6 +16,9 @@ document.addEventListener(
     iniciarSistema
 );
 
+let paginaProcessos = 1;
+const TAMANHO_PAGINA_PROCESSOS = 20;
+let linhaProcessoEditando = null;
 
 
 async function iniciarSistema(){
@@ -40,6 +43,7 @@ async function iniciarSistema(){
 
         limparFormulario();
 
+        await carregarProcessos();
 
 
     }
@@ -194,10 +198,179 @@ function configurarEventos(){
     .getElementById("btnNovo")
     .addEventListener(
         "click",
-        limparFormulario
+        voltarParaLista
     );
 
+    document
+    .getElementById("btnNovoProcesso")
+    .addEventListener("click", abrirFormularioNovo);
 
+    document
+    .getElementById("btnFiltrarProcessos")
+    .addEventListener("click", function(){
+        paginaProcessos = 1;
+        carregarProcessos();
+    });
+
+    document
+    .getElementById("filtroProcesso")
+    .addEventListener("keydown", function(e){
+        if(e.key === "Enter"){
+            paginaProcessos = 1;
+            carregarProcessos();
+        }
+    });
+
+    document
+    .getElementById("btnLimparFiltro")
+    .addEventListener("click", function(){
+        document.getElementById("filtroProcesso").value = "";
+        paginaProcessos = 1;
+        carregarProcessos();
+    });
+
+    document
+    .getElementById("btnPaginaAnterior")
+    .addEventListener("click", function(){
+        if(paginaProcessos > 1){
+            paginaProcessos--;
+            carregarProcessos();
+        }
+    });
+
+    document
+    .getElementById("btnProximaPagina")
+    .addEventListener("click", function(){
+        paginaProcessos++;
+        carregarProcessos();
+    });
+
+
+}
+
+async function carregarProcessos(){
+
+    const resumo = document.getElementById("resumoProcessos");
+
+    try{
+
+        mostrarLoading(true);
+
+        const resposta = await API.listarProcessos({
+            pagina: paginaProcessos,
+            tamanhoPagina: TAMANHO_PAGINA_PROCESSOS,
+            filtro: document.getElementById("filtroProcesso").value.trim()
+        });
+
+        if(!resposta || !resposta.ok){
+            const mensagem = resposta ? resposta.mensagem : "Não foi possível carregar os processos.";
+            resumo.textContent = mensagem;
+            mostrarToast(mensagem, "erro");
+            return;
+        }
+
+        renderizarProcessos(resposta.dados);
+
+    }catch(e){
+
+        resumo.textContent = "Erro ao carregar os processos.";
+        mostrarToast("Erro ao carregar os processos: " + e.message, "erro");
+
+    }finally{
+
+        mostrarLoading(false);
+
+    }
+
+}
+
+function renderizarProcessos(dados){
+
+    const corpo = document.getElementById("corpoProcessos");
+    const mensagem = document.getElementById("mensagemLista");
+    const totalPaginas = dados.totalPaginas;
+
+    corpo.innerHTML = "";
+    mensagem.hidden = dados.processos.length > 0;
+    mensagem.textContent = dados.total === 0
+        ? "Nenhum processo encontrado."
+        : "";
+
+    dados.processos.forEach(function(processo){
+
+        const linha = document.createElement("tr");
+        const numero = processo.processo.toUpperCase() === "SUSPAD"
+            ? processo.idProcesso
+            : processo.pdg;
+        const valores = [
+            processo.processo,
+            numero || "—",
+            processo.nome || "—",
+            processo.status || "—",
+            processo.dataRecebimento || "—"
+        ];
+
+        valores.forEach(function(valor, indice){
+            const celula = document.createElement("td");
+            celula.textContent = valor;
+            if(indice === 1)
+                celula.className = "numero-processo";
+            linha.appendChild(celula);
+        });
+
+        const acao = document.createElement("td");
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "link-processo";
+        botao.textContent = "Abrir";
+        botao.addEventListener("click", function(){
+            abrirProcessoParaEdicao(processo);
+        });
+        acao.appendChild(botao);
+        linha.appendChild(acao);
+        corpo.appendChild(linha);
+
+    });
+
+    document.getElementById("resumoProcessos").textContent =
+        dados.total + (dados.total === 1 ? " processo" : " processos");
+    document.getElementById("infoPaginacao").textContent =
+        dados.total === 0
+            ? "Página 0 de 0"
+            : "Página " + dados.pagina + " de " + totalPaginas;
+    document.getElementById("btnPaginaAnterior").disabled =
+        dados.pagina <= 1;
+    document.getElementById("btnProximaPagina").disabled =
+        dados.pagina >= totalPaginas;
+
+}
+
+function abrirFormularioNovo(){
+
+    linhaProcessoEditando = null;
+    limparFormulario();
+    document.getElementById("btnCadastrar").textContent = "Cadastrar";
+    document.getElementById("listaView").hidden = true;
+    document.getElementById("formView").hidden = false;
+
+}
+
+function abrirProcessoParaEdicao(processo){
+
+    linhaProcessoEditando = processo.linhaBase;
+    limparFormulario();
+    preencherFormulario(processo);
+    document.getElementById("btnCadastrar").textContent = "Salvar alterações";
+    document.getElementById("listaView").hidden = true;
+    document.getElementById("formView").hidden = false;
+
+}
+
+function voltarParaLista(){
+
+    linhaProcessoEditando = null;
+    document.getElementById("formView").hidden = true;
+    document.getElementById("listaView").hidden = false;
 
 }
 
@@ -612,7 +785,11 @@ function converterParaInputData(data){
  */
 function preencherFormulario(dados){
 
-    // Garante que o status dinâmico foi atualizado de acordo com o tipo de processo dos dados buscados
+    if(dados.linhaBase)
+        linhaProcessoEditando = dados.linhaBase;
+    document.getElementById("btnCadastrar").textContent = "Salvar alterações";
+
+    // Garante que o status dinâmico foi atualizado de acordo com o Tipo de Processo dos dados buscados
     if(dados.processo) {
         const selectProcesso = document.getElementById("processo");
         if(selectProcesso) selectProcesso.value = dados.processo;
@@ -625,10 +802,25 @@ function preencherFormulario(dados){
         const elemento = document.getElementById(campo);
 
         if(elemento){
-            elemento.value = dados[campo] || "";
+            let valor = dados[campo] || "";
+
+            if(campo === "dataRecebimento" || campo === "dataEncaminhamento")
+                valor = converterParaInputData(valor);
+
+            if(elemento.tagName === "SELECT" && valor &&
+                !Array.from(elemento.options).some(opcao => opcao.value === valor)){
+                const opcao = document.createElement("option");
+                opcao.value = valor;
+                opcao.textContent = valor;
+                elemento.appendChild(opcao);
+            }
+
+            elemento.value = valor;
         }
 
     });
+
+    mostrarStatusBusca("Processo carregado para edição.", true);
 
 }
 

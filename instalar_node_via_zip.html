@@ -73,7 +73,19 @@
     </ol>
     <p>A pasta extraída conterá os executáveis <code>node.exe</code> e <code>npm</code>, além de outros arquivos necessários.</p>
 
-    <h2>Passo 3: Configurar os Diretórios para Módulos Globais e Cache</h2>
+    <h2>Passo 3: Adicionar os Caminhos ao PATH do Sistema</h2>
+    <p>Para que você possa usar os comandos <code>node</code> e <code>npm</code> de qualquer lugar no seu terminal, é necessário adicionar os caminhos das pastas do Node.js e dos módulos globais à variável de ambiente **PATH** do seu sistema.</p>
+
+    <ol>
+        <li>Abra o menu Iniciar e digite <strong>"Variáveis de Ambiente"</strong>, depois clique em <strong>"Editar as variáveis de ambiente do sistema"</strong>.</li>
+        <li>Na janela que se abrir, clique no botão <strong>"Variáveis de Ambiente..."</strong>.</li>
+        <li>Na seção **"Variáveis de usuário"**, encontre a variável chamada <code>Path</code> e clique em **"Editar"**.</li>
+        <li>Clique em **"Novo"** e adicione o caminho completo para a pasta onde você extraiu o Node.js. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64</code>.</li>
+        <li>Clique em **"Novo"** novamente e adicione o caminho para a pasta **<code>npm-global</code>** que você criou. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64\npm-global</code>.</li>
+        <li>Clique em **"OK"** para fechar todas as janelas.</li>
+    </ol>
+
+    <h2>Passo 4: Configurar os Diretórios para Módulos Globais e Cache</h2>
     <p>Para evitar problemas de permissão e manter seus módulos globais organizados, é recomendado criar pastas dedicadas para o npm. O npm é o gerenciador de pacotes do Node.js.</p>
 
     <ol>
@@ -86,18 +98,6 @@
         <li>Em seguida, abra o **Prompt de Comando** (cmd) ou **PowerShell** e use os seguintes comandos para configurar o npm, substituindo o caminho pelo seu:</li>
         <pre><code>npm config set prefix "C:\dev\nodejs\node-v20.12.2-win-x64\npm-global"
 npm config set cache "C:\dev\nodejs\node-v20.12.2-win-x64\npm-cache"</code></pre>
-    </ol>
-
-    <h2>Passo 4: Adicionar os Caminhos ao PATH do Sistema</h2>
-    <p>Para que você possa usar os comandos <code>node</code> e <code>npm</code> de qualquer lugar no seu terminal, é necessário adicionar os caminhos das pastas do Node.js e dos módulos globais à variável de ambiente **PATH** do seu sistema.</p>
-
-    <ol>
-        <li>Abra o menu Iniciar e digite <strong>"Variáveis de Ambiente"</strong>, depois clique em <strong>"Editar as variáveis de ambiente do sistema"</strong>.</li>
-        <li>Na janela que se abrir, clique no botão <strong>"Variáveis de Ambiente..."</strong>.</li>
-        <li>Na seção **"Variáveis de usuário"**, encontre a variável chamada <code>Path</code> e clique em **"Editar"**.</li>
-        <li>Clique em **"Novo"** e adicione o caminho completo para a pasta onde você extraiu o Node.js. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64</code>.</li>
-        <li>Clique em **"Novo"** novamente e adicione o caminho para a pasta **<code>npm-global</code>** que você criou. Por exemplo: <code>C:\dev\nodejs\node-v20.12.2-win-x64\npm-global</code>.</li>
-        <li>Clique em **"OK"** para fechar todas as janelas.</li>
     </ol>
 
     <h2>Passo 5: Verificar a Instalação</h2>

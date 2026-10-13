@@ -47,10 +47,10 @@ async function enviarCadastro(){
 
         mostrarLoading(true);
 
-
-
-        const resposta =
-        await API.cadastrarProcesso(dados);
+        const editando = linhaProcessoEditando !== null;
+        const resposta = linhaProcessoEditando
+            ? await API.atualizarProcesso(dados, linhaProcessoEditando)
+            : await API.cadastrarProcesso(dados);
 
 
 
@@ -67,7 +67,14 @@ async function enviarCadastro(){
 
 
 
-            limparFormulario();
+            linhaProcessoEditando = null;
+            document.getElementById("formView").hidden = true;
+            document.getElementById("listaView").hidden = false;
+            document.getElementById("btnCadastrar").textContent = "Cadastrar";
+            if(!editando)
+                document.getElementById("filtroProcesso").value = "";
+            paginaProcessos = 1;
+            await carregarProcessos();
 
 
 
@@ -258,7 +265,7 @@ function validarFormulario(dados){
             nome: "Tipo do processo"
         },
         {
-            campo: "pdg",
+            campo: dados.processo === "SUSPAD" ? "idProcesso" : "pdg",
             nome: dados.processo === "SUSPAD" ? "ID Processo" : "PDG"
         },
         {
