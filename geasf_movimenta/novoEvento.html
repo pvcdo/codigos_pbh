@@ -1,0 +1,99 @@
+<h1>Registrar novo evento</h1>
+<form id="formEvento">
+  <label>DATA DO EVENTO *
+    <input name="DATA DO EVENTO" type="date" required>
+  </label>
+  <label>DISTRITO
+    <input name="DISTRITO" type="text">
+  </label>
+  <label>UNIDADES
+    <input name="UNIDADES" type="text">
+  </label>
+  <label>Calendário
+    <input name="Calendário" type="text">
+  </label>
+  <label>TEMA *
+    <input name="TEMAS" type="text" required>
+  </label>
+  <label>OBJETIVO
+    <textarea name="OBJETIVO"></textarea>
+  </label>
+  <label>TIPO DE AÇÃO
+    <input name="TIPO DE AÇÃO" type="text">
+  </label>
+  <label>ESPECIFICAÇÃO *
+    <input name="ESPECIFICAÇÃO" type="text" required>
+  </label>
+  <label>ONLINE/PRESENCIAL
+    <select name="ONLINE/PRESENCIAL">
+      <option value="">Selecione</option>
+      <option value="Online">Online</option>
+      <option value="Presencial">Presencial</option>
+    </select>
+  </label>
+  <!--<label>TOTAL DE PARTICIPANTES
+    <input name="TOTAL DE PARTICIPANTES" type="number" min="0" step="1">
+  </label>-->
+  <label>Área de Atuação
+    <input name="Área de Atuação" type="text">
+  </label>
+  <label>Contexto
+    <textarea name="Contexto"></textarea>
+  </label>
+  <label>Calendário da Saúde MS
+    <input name="Calendário da Saúde MS" type="text">
+  </label>
+  <label>Calendário de Cores MS
+    <input name="Calendário de Cores MS" type="text">
+  </label>
+  <label>Calendário POEPS
+    <input name="Calendário POEPS" type="text">
+  </label>
+  <label>Calendário Nacional
+    <input name="Calendário Nacional" type="text">
+  </label>
+  
+  <label>Inscrições abertas 
+    <input type="checkbox" id="inscricoes_abertas" name="Inscrições abertas">
+  </label>
+
+  <label class="wide">PARCEIROS
+    <textarea name="PARCEIROS"></textarea>
+  </label>
+  <div class="actions wide">
+    <button id="submitButton" type="submit">Salvar evento</button>
+    <button class="cancel" onclick="mostrarLista()">Cancelar</button>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+</form>
+<script>
+  const form = document.getElementById('formEvento');
+  const submitButton = document.getElementById('submitButton');
+  const status = document.getElementById('status');
+
+  form.addEventListener('submit', function(event) {
+    exibirLoading('Salvando evento...');
+    event.preventDefault();
+    submitButton.disabled = true;
+    const dados = Object.fromEntries(new FormData(form).entries());
+
+    google.script.run
+      .withSuccessHandler(function(eventosAtualizados) {
+        ocultarLoading();
+        submitButton.disabled = false;
+        status.textContent = '';
+        
+        // Passa a lista atualizada enviada pelo servidor
+        mostrarLista(eventosAtualizados);
+      })
+      .withFailureHandler(function(error) {
+        ocultarLoading();
+        status.textContent = error && error.message
+          ? error.message
+          : 'Não foi possível salvar o evento.';
+        submitButton.disabled = false;
+      })
+      .salvarEvento(dados);
+  });
+</script>
+

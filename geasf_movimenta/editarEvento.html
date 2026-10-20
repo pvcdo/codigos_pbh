@@ -1,0 +1,124 @@
+<header>
+  <h1>Editar Evento</h1>
+  <div id="area_botao_presenca">
+    <button type="button" onclick="copiarLinkPresenca(document.getElementById('form_editar_evento').elements['id_evento'].value, this)">
+      Copiar Link de Presença
+    </button>
+  </div>
+  <button type="button" class="cancel" onclick="mostrarLista()">Voltar para a lista</button>
+</header>
+
+<p id="status_editar" role="status" aria-live="polite"></p>
+
+<h4 id="id_editar"></h4>
+
+<form id="form_editar_evento">
+  <!-- Campo oculto para guardar o ID do evento sendo editado -->
+  <input type="hidden" name="id_evento">
+
+  <label>DATA DO EVENTO *
+    <input name="DATA DO EVENTO" type="date" required>
+  </label>
+  <label>DISTRITO
+    <input name="DISTRITO" type="text">
+  </label>
+  <label>UNIDADES
+    <input name="UNIDADES" type="text">
+  </label>
+  <label>Calendário
+    <input name="Calendário" type="text">
+  </label>
+  <label>TEMA *
+    <input name="TEMAS" type="text" required>
+  </label>
+  <label>OBJETIVO
+    <textarea name="OBJETIVO"></textarea>
+  </label>
+  <label>TIPO DE AÇÃO
+    <input name="TIPO DE AÇÃO" type="text">
+  </label>
+  <label>ESPECIFICAÇÃO *
+    <input name="ESPECIFICAÇÃO" type="text" required>
+  </label>
+  <label>ONLINE/PRESENCIAL
+    <select name="ONLINE/PRESENCIAL">
+      <option value="">Selecione</option>
+      <option value="Online">Online</option>
+      <option value="Presencial">Presencial</option>
+    </select>
+  </label>
+  <div style="flex-direction: column">
+    <div style="flex-direction: row; margin-bottom: 7px">
+      <b>TOTAL DE PARTICIPANTES</b>
+      <button class="editarEvento">Ver lista</button>
+    </div>
+    <input name="TOTAL DE PARTICIPANTES" disabled>
+  </div>
+  <label>Área de Atuação
+    <input name="Área de Atuação" type="text">
+  </label>
+  <label>Contexto
+    <textarea name="Contexto"></textarea>
+  </label>
+  <label>Calendário da Saúde MS
+    <input name="Calendário da Saúde MS" type="text">
+  </label>
+  <label>Calendário de Cores MS
+    <input name="Calendário de Cores MS" type="text">
+  </label>
+  <label>Calendário POEPS
+    <input name="Calendário POEPS" type="text">
+  </label>
+  <label>Calendário Nacional
+    <input name="Calendário Nacional" type="text">
+  </label>
+  <div style="flex">
+    <label>Inscrições abertas
+      <input type="checkbox" id="inscricoes_abertas" name="Inscrições abertas" value="sim">
+    </label>
+  </div>
+  <label class="wide">PARCEIROS
+    <textarea name="PARCEIROS"></textarea>
+  </label>
+  <div class="actions wide">
+    <button id="submitButton_editar" type="submit">Salvar alterações</button>
+    <button type="button" class="cancel" onclick="mostrarLista()">Cancelar</button>
+  </div>
+  
+</form>
+
+<script>
+  const formEditar = document.getElementById('form_editar_evento');
+  const submitButtonEditar = document.getElementById('submitButton_editar');
+  const statusEditar = document.getElementById('status_editar');
+
+  formEditar.addEventListener('submit', function(event) {
+    exibirLoading('Salvando alterações...');
+    event.preventDefault();
+    submitButtonEditar.disabled = true;
+    
+    const dados = Object.fromEntries(new FormData(formEditar).entries());
+
+    // Força a leitura correta do estado do checkbox
+    const checkboxInscricoes = document.getElementById('inscricoes_abertas');
+    dados['Inscrições abertas'] = checkboxInscricoes.checked ? 'sim' : 'não';
+
+    google.script.run
+      .withSuccessHandler(function(eventosAtualizados) {
+        ocultarLoading();
+        formEditar.reset();
+        submitButtonEditar.disabled = false;
+        statusEditar.textContent = '';
+        
+        mostrarLista(eventosAtualizados);
+      })
+      .withFailureHandler(function(error) {
+        ocultarLoading();
+        statusEditar.textContent = error && error.message
+          ? error.message
+          : 'Não foi possível editar o evento.';
+        submitButtonEditar.disabled = false;
+      })
+      .editarEvento(dados);
+  });
+</script>

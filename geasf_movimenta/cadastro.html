@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <style>
+      body {
+        color: #243342;
+        font-family: Arial, sans-serif;
+        margin: 0 auto;
+        max-width: 960px;
+        padding: 32px 20px;
+      }
+      h1 {
+        font-size: 26px;
+        margin: 0 0 24px;
+      }
+      form {
+        display: grid;
+        gap: 18px 20px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        gap: 7px;
+      }
+      input, select, textarea {
+        border: 1px solid #aab6bf;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: #243342;
+        font: inherit;
+        font-weight: normal;
+        min-height: 42px;
+        padding: 9px;
+        width: 100%;
+      }
+      input[type="checkbox"]{
+        width: 20px;
+        height: 20px;
+        margin: 0
+      }
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      .wide {
+        grid-column: 1 / -1;
+      }
+      .actions {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+      }
+      button {
+        background: #176b55;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: bold;
+        padding: 12px 18px;
+      }
+      button.editarEvento {
+        background: none;
+        border: none;
+        padding: 0;
+        color: #0066cc; /* Cor tradicional de link */
+        text-decoration: underline; /* Linha embaixo */
+        font-family: inherit; /* Mantém a fonte do resto do texto */
+        font-size: inherit;
+        cursor: pointer; /* Garante o ícone de "mãozinha" ao passar o mouse */
+      }
+      button.editarEvento:hover {
+        color: #004499; /* Cor levemente mais escura no hover */
+      }
+      button:disabled {
+        cursor: wait;
+        opacity: .65;
+      }
+      button.cancel {
+        background-color: transparent; /* Fundo transparente */
+        color: #176b55;                /* Cor do texto */
+        border: 2px solid #176b55;     /* Borda colorida */
+        padding: 10px 20px;            /* Espaçamento interno */
+        font-size: 16px;               /* Tamanho da fonte */
+        border-radius: 4px;            /* Cantos arredondados */
+        cursor: pointer;               /* Cursor em formato de mão */
+        transition: all 0.3s ease;     /* Animação suave */
+      }
+
+      /* Efeito ao passar o mouse (Hover)
+      button.cancel:hover {
+        background-color: #176b55;     /* Preenche o fundo 
+        color: #fff;                   /* Torna o texto branco 
+      }*/
+      #status {
+        color: #9a271e;
+        grid-column: 1 / -1;
+        margin: 0;
+      }
+      @media (max-width: 620px) {
+        body { padding: 24px 12px; }
+        form { grid-template-columns: 1fr; }
+        .wide { grid-column: auto; }
+      }
+      header {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      a.button {
+        background: #176b55;
+        border-radius: 4px;
+        color: #fff;
+        font-weight: bold;
+        padding: 12px 16px;
+        text-decoration: none;
+      }
+      h4#id_editar{
+        color: #d3d3d3
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        border-bottom: 1px solid #dce3e8;
+        padding: 12px;
+        text-align: left;
+      }
+      th {
+        background: #f3f6f7;
+      }
+      .empty {
+        color: #586875;
+        padding: 24px 12px;
+        text-align: center;
+      }
+      @media (max-width: 540px) {
+        body { padding: 24px 12px; }
+        th, td { padding: 10px 8px; }
+      }
+
+      /* Container de sobreposição em tela cheia */
+      #loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente */
+        backdrop-filter: blur(2px);                 /* Efeito de desfoque leve */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;                              /* Garante que fique acima de tudo */
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      /* Classe para ocultar o elemento */
+      #loading-overlay.hidden {
+        display: none !important;
+      }
+
+      /* Animação do Spinner */
+      .spinner {
+        width: 46px;
+        height: 46px;
+        border: 5px solid #dce3e8;
+        border-top: 5px solid #176b55; /* Cor principal da aplicação */
+        border-radius: 50%;
+        animation: spin 0.9s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      #loading-texto {
+        margin-top: 14px;
+        font-weight: bold;
+        color: #176b55;
+        font-size: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="lista_eventos" style="display: block;">
+      <?!= include('listaEventos',eventos); ?>
+    </div>
+
+    <div id="editar_evento" style="display: none;">
+      <?!= include('editarEvento', eventos); ?>
+    </div>
+
+    <div id="novo_evento" style="display: none;">
+      <?!= include('novoEvento'); ?>
+    </div>
+
+    <!-- Elemento Overlay de Loading -->
+    <div id="loading-overlay" class="hidden">
+      <div class="spinner"></div>
+      <span id="loading-texto">Carregando...</span>
+    </div>
+
+    <script>
+      // Transforma o array de eventos retornado pelo Apps Script em uma variável JavaScript no navegador
+      let listaEventosGlobal = <?!= JSON.stringify(eventos) ?>;
+
+      function renderizarTabelaEventos(eventos) {
+        listaEventosGlobal = eventos;
+        const tbody = document.getElementById('corpo_tabela_eventos');
+
+        if (!tbody) return;
+
+        if (eventos.length === 0) {
+          tbody.innerHTML = '<tr><td class="empty" colspan="3">Nenhum evento cadastrado.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = eventos.map(evento => `
+          <tr>
+            <td>
+              <button class="editarEvento" onclick="mostrarEvento('${evento.id}')">${evento.id}</button>
+            </td>
+            <td>${evento.data || ''}</td>
+            <td>${evento.especificacao || ''}</td>
+          </tr>
+        `).join('');
+      }
+
+      function mostrarEvento(id) {
+        
+        exibirLoading('Carregando informações do evento...');
+
+        const formEditar = document.getElementById('form_editar_evento');
+        const statusEditar = document.getElementById('status_editar');
+        const id_editar = document.getElementById('id_editar');
+        const area_botao_presenca = document.getElementById('area_botao_presenca');
+
+        if (statusEditar) statusEditar.textContent = 'Buscando dados do evento...';
+        if (id_editar) id_editar.textContent = id
+
+
+        document.getElementById("lista_eventos").style.display = "none";
+        document.getElementById("novo_evento").style.display = "none";
+        document.getElementById("editar_evento").style.display = "block";
+
+        google.script.run
+        .withSuccessHandler(function(evento) {
+          ocultarLoading();
+          if (statusEditar) statusEditar.textContent = '';
+          if (evento && formEditar) {
+            // Preenche cada campo do formulário respeitando o tipo de input
+            for (const [key, val] of Object.entries(evento)) {
+              const campo = formEditar.elements[key];
+              if (campo) {
+                if (campo.type === 'checkbox') {
+                  // Marca o checkbox se o valor no banco for "sim"
+                  campo.checked = String(val || '').trim().toLowerCase() === 'sim';
+
+                  if(campo.checked){
+                    area_botao_presenca.style.display = "block"
+                  }else{
+                    area_botao_presenca.style.display = "none"
+                  }
+                } else {
+                  campo.value = val || '';
+                }
+              }
+            }
+          }
+        })
+        .withFailureHandler(function(error) {
+          ocultarLoading();
+          if (statusEditar) {
+            statusEditar.textContent = error && error.message
+              ? error.message
+              : 'Erro ao buscar dados do evento.';
+          }
+        })
+        .obterEventoPorId(id);
+      }
+
+      function mostrarLista(novosEventos) {
+        // Se receber uma lista atualizada do servidor, atualiza a tabela primeiro
+        if (novosEventos) {
+          renderizarTabelaEventos(novosEventos);
+        }
+        document.getElementById("editar_evento").style.display = "none";
+        document.getElementById("lista_eventos").style.display = "block";
+        document.getElementById("novo_evento").style.display = "none";
+      }
+
+      function mostrarNovoEvento() {
+        document.getElementById("editar_evento").style.display = "none";
+        document.getElementById("lista_eventos").style.display = "none";
+        document.getElementById("novo_evento").style.display = "block";
+      }
+
+      // Exibe o overlay de carregamento (permite alterar a mensagem dinamicamente)
+      function exibirLoading(mensagem = 'Carregando...') {
+        const overlay = document.getElementById('loading-overlay');
+        const texto = document.getElementById('loading-texto');
+        if (texto) texto.textContent = mensagem;
+        if (overlay) overlay.classList.remove('hidden');
+      }
+
+      // Oculta o overlay de carregamento
+      function ocultarLoading() {
+        const overlay = document.getElementById('loading-overlay');
+        if (overlay) overlay.classList.add('hidden');
+      }
+
+      function copiarLinkPresenca(idEvento, elementoBotao) {
+        if (!idEvento) {
+          alert('ID do evento inválido.');
+          return;
+        }
+
+        // Captura a URL base da aplicação Web sem os parâmetros de busca
+        const urlBase = 'https://script.google.com/a/macros/pbh.gov.br/s/AKfycbwQ1C1JZI1sI-TbzijbbIFFo87ZlKSlBhkSZbsxFbC2/dev';
+        const urlPresenca = `${urlBase}?action=presenca&evento=${idEvento}`;
+
+        // Copia o link para a área de transferência
+        navigator.clipboard.writeText(urlPresenca)
+          .then(() => {
+            // Feedback visual temporário no próprio botão, se fornecido
+            if (elementoBotao) {
+              const textoOriginal = elementoBotao.textContent;
+              elementoBotao.textContent = 'Link copiado! ✓';
+              elementoBotao.style.backgroundColor = '#0e4134';
+              
+              setTimeout(() => {
+                elementoBotao.textContent = textoOriginal;
+                elementoBotao.style.backgroundColor = '';
+              }, 2000);
+            } else {
+              alert('Link de presença copiado para a área de transferência!');
+            }
+          })
+          .catch(err => {
+            console.error('Erro ao copiar o link: ', err);
+            // Fallback em caso de bloqueio de permissão do navegador
+            prompt('Copie o link manualmente:', urlPresenca);
+          });
+      }
+    </script>
+  </body>
+</html>

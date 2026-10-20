@@ -1,0 +1,26 @@
+    <header>
+      <h1>Eventos cadastrados</h1>
+      <button type="button" onclick="mostrarNovoEvento()">Registrar novo evento</button>
+    </header>
+    <table id="tabela_eventos">
+      <thead>
+        <tr>
+          <th>ID DO EVENTO</th>
+          <th>DATA DO EVENTO</th>
+          <th>ESPECIFICAÇÃO</th>
+        </tr>
+      </thead>
+      <tbody id="corpo_tabela_eventos">
+        <? if (data.length === 0) { ?>
+          <tr><td class="empty" colspan="3">Nenhum evento cadastrado.</td></tr>
+        <? } else { ?>
+          <? data.forEach(function(evento) { ?>
+            <tr>
+              <td><button class="editarEvento" onclick="mostrarEvento('<?= evento.id ?>')"><?= evento.id ?></button></td>
+              <td><?= evento.data ?></td>
+              <td><?= evento.especificacao ?></td>
+            </tr>
+          <? }); ?>
+        <? } ?>
+      </tbody>
+    </table>
