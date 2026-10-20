@@ -25,7 +25,9 @@ function buscarProcesso(valor, tipo){
     // ID do Processo = coluna 3
     const colunaBusca = (tipo === "SUSPAD") ? 3 : 2;
 
-    for (const linha of dados){
+    for (let i = 0; i < dados.length; i++){
+
+      const linha = dados[i];
 
       if (
         limparTexto(linha[0]).toUpperCase() === tipo &&
@@ -34,6 +36,7 @@ function buscarProcesso(valor, tipo){
 
         return sucesso("Processo localizado.",{
 
+          linhaBase: i + 3,
           processo: linha[0],
           pdg: linha[2],
           idProcesso: linha[3],
@@ -65,6 +68,81 @@ function buscarProcesso(valor, tipo){
 
     Logger.log(e);
     return erro(e.message);
+
+  }
+
+}
+
+/**
+ * Lista os processos mais recentes primeiro, com paginação e filtro por
+ * PDG ou ID do processo (SUSPAD).
+ */
+function listarProcessos(pagina, tamanhoPagina, filtro){
+
+  try{
+
+    pagina = Math.max(1, parseInt(pagina, 10) || 1);
+    tamanhoPagina = Math.min(50, Math.max(1, parseInt(tamanhoPagina, 10) || 20));
+    filtro = limparTexto(filtro).toLowerCase();
+
+    const dados = getDadosBase();
+    const processos = [];
+
+    for(let i = dados.length - 1; i >= 0; i--){
+
+      const linha = dados[i];
+      const tipo = limparTexto(linha[0]);
+
+      if(vazio(tipo))
+        continue;
+
+      const identificador = limparTexto(
+        tipo.toUpperCase() === "SUSPAD" ? linha[3] : linha[2]
+      );
+
+      if(filtro && identificador.toLowerCase().indexOf(filtro) === -1)
+        continue;
+
+      processos.push({
+        linhaBase: i + 3,
+        processo: tipo,
+        pdg: limparTexto(linha[2]),
+        idProcesso: limparTexto(linha[3]),
+        dataRecebimento: formatarData(linha[4]),
+        responsavel: limparTexto(linha[6]),
+        bm: limparTexto(linha[7]),
+        nome: limparTexto(linha[8]),
+        cargo: limparTexto(linha[9]),
+        lotacao: limparTexto(linha[11]),
+        regional: limparTexto(linha[12]),
+        vinculo: limparTexto(linha[13]),
+        situacaoFuncional: limparTexto(linha[14]),
+        dataEncaminhamento: formatarData(linha[15]),
+        motivacao: limparTexto(linha[17]),
+        status: limparTexto(linha[19]),
+        encaminhadoPara: limparTexto(linha[20]),
+        publicacaoDOM: limparTexto(linha[22]),
+        observacoes: limparTexto(linha[23])
+      });
+
+    }
+
+    const total = processos.length;
+    const totalPaginas = Math.ceil(total / tamanhoPagina);
+    const inicio = (pagina - 1) * tamanhoPagina;
+
+    return sucesso("Processos carregados.", {
+      processos: processos.slice(inicio, inicio + tamanhoPagina),
+      pagina: pagina,
+      tamanhoPagina: tamanhoPagina,
+      total: total,
+      totalPaginas: totalPaginas
+    });
+
+  }catch(e){
+
+    Logger.log(e);
+    return erro("Erro ao listar processos: " + e.message);
 
   }
 

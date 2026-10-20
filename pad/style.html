@@ -88,6 +88,132 @@ body{
 
 }
 
+.lista-processos{
+
+    margin-bottom:25px;
+
+}
+
+.lista-cabecalho,
+.filtro-controles,
+.paginacao-processos{
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+
+}
+
+.lista-cabecalho{
+
+    margin-bottom:24px;
+
+}
+
+.lista-cabecalho h2{
+
+    font-size:21px;
+
+}
+
+.lista-cabecalho p,
+#infoPaginacao,
+.mensagem-lista{
+
+    margin-top:6px;
+    color:var(--subtitle);
+    font-size:14px;
+
+}
+
+.filtro-processos{
+
+    max-width:700px;
+    margin-bottom:24px;
+
+}
+
+.filtro-controles input{
+
+    flex:1;
+    min-width:100px;
+
+}
+
+.tabela-processos{
+
+    overflow-x:auto;
+
+}
+
+.tabela-processos table{
+
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+
+}
+
+.tabela-processos th,
+.tabela-processos td{
+
+    padding:14px 12px;
+    border-bottom:1px solid var(--border);
+    font-size:14px;
+
+}
+
+.tabela-processos th{
+
+    color:var(--subtitle);
+    font-size:12px;
+    text-transform:uppercase;
+
+}
+
+.tabela-processos tbody tr:hover{
+
+    background:#f7f9fc;
+
+}
+
+.numero-processo{
+
+    font-weight:600;
+
+}
+
+.link-processo{
+
+    padding:7px 12px;
+    background:#edf3ff;
+    color:var(--primary);
+    font-size:13px;
+
+}
+
+.paginacao-processos{
+
+    justify-content:flex-end;
+    margin-top:20px;
+
+}
+
+.paginacao-processos button:disabled{
+
+    cursor:not-allowed;
+    opacity:.5;
+    transform:none;
+
+}
+
+.mensagem-lista{
+
+    padding:20px 0;
+
+}
+
 .grid-1{
 
     display:grid;
@@ -519,6 +645,22 @@ button:hover{
     .acoes{
 
         flex-direction:column;
+
+    }
+
+    .lista-cabecalho,
+    .filtro-controles,
+    .paginacao-processos{
+
+        align-items:stretch;
+        flex-direction:column;
+
+    }
+
+    .tabela-processos th,
+    .tabela-processos td{
+
+        padding:10px 8px;
 
     }
 
