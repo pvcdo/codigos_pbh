@@ -74,6 +74,19 @@ def limpar_texto(valor):
 df = df.map(limpar_texto)
 
 print("Exportando para o arquivo Excel...")
+
+# Tentativa de salvamento no Google Drive (Disco I:)
+caminho_drive_pasta = r"I:\Meu Drive\ArteRh"
+caminho_drive_arquivo = os.path.join(caminho_drive_pasta, "arterh-sql.csv")
+try:
+    if os.path.exists(caminho_drive_pasta):
+        df.to_csv(caminho_drive_arquivo, index=False, header=False)
+        print("✅ Salvo com sucesso no Google Drive (I:).")
+    else:
+        print("⚠️ Unidade I: (Google Drive) desconectada. Ignorando este salvamento.")
+except Exception as e:
+    print(f"⚠️ Falha ao salvar no Google Drive: {e}")
+
 # Salva direto em um arquivo Excel na sua Área de Trabalho
 df.to_csv(r"\\smsa_fs\GGCAT\COORDENAÇÃO DE CADM\Inteligência\Paulo\Relatorio Arte GEASF\arterh-sql.csv", index=False, header=False)
 
