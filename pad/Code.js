@@ -5,8 +5,6 @@
  * ============================================================
  */
 
-// teste de atualização
-
 /**
  * Nome da aba que contém o banco de dados.
  */

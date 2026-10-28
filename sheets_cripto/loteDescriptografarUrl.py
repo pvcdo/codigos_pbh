@@ -7,17 +7,30 @@ from datetime import datetime
 import pandas as pd
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
+import hmac
+import hashlib
+import time
 
-# Importa o arquivo de variáveis de ambiente
+# Importa o arquivo de variáveis de ambiente (.env ou env.py)
 try:
     import env
 except ImportError:
     pass
 
-# Importa a lista de configurações do arquivo separado
 from config_planilhas import PLANILHAS_CONFIG
 
 PLANILHAS_CONFIG_FALHA = []
+
+def gerar_token_temporal(secret: str, window_size: int = 300) -> str:
+    """
+    Gera um HMAC-SHA256 dinâmico baseado no timestamp Unix em blocos de tempo (padrão: 5 min).
+    """
+    now_in_seconds = int(time.time())
+    current_window = now_in_seconds // window_size
+    message = str(current_window).encode('utf-8')
+    key = secret.encode('utf-8')
+    
+    return hmac.new(key, message, hashlib.sha256).hexdigest()
 
 def salvar_arquivo_config_falha(caminho_arquivo: str, lista_falhas: list):
     """Reescreve o arquivo config_planilhas_falha.py com o array atualizado de falhas."""
@@ -42,45 +55,37 @@ def decriptografar_csv(conteudo_base64: str, chave: bytes, iv: bytes) -> str:
 
 
 def processar_todas_as_planilhas():
-    # ==========================================================================
-    # 1. CONFIGURAÇÃO DE DIRETÓRIOS E REGISTRO DE LOG
-    # ==========================================================================
     diretorio_base = r'\\smsa_fs/GGCAT/COORDENAÇÃO DE CADM/Inteligência/Paulo/Planilhas GEASF'
     diretorio_atual = os.path.dirname(os.path.abspath(__file__))
     diretorio_planilhas = os.path.join(diretorio_base, 'planilhas')
     diretorio_logs = os.path.join(diretorio_base, 'logs')
     caminho_config_falha = os.path.join(diretorio_atual, 'config_planilhas_falha.py')
 
-    # Cria as pastas caso ainda não existam
     os.makedirs(diretorio_planilhas, exist_ok=True)
     os.makedirs(diretorio_logs, exist_ok=True)
 
-    # Identificação única por Data e Hora no nome do arquivo
     data_inicio = datetime.now()
     timestamp_nome = data_inicio.strftime("%Y-%m-%d_%H-%M-%S")
     caminho_log = os.path.join(diretorio_logs, f"log_execucao_{timestamp_nome}.txt")
 
     def registrar_log(mensagem: str):
-        """Imprime a mensagem no console e salva no arquivo de log simultaneamente."""
         print(mensagem)
         with open(caminho_log, "a", encoding="utf-8") as f_log:
             f_log.write(mensagem + "\n")
 
-    # Cabeçalho do Log
     registrar_log("=" * 65)
     registrar_log("LOG DE EXECUÇÃO - EXTRAÇÃO DE PLANILHAS CRIPTOGRAFADAS")
     registrar_log(f"Data/Hora de Início: {data_inicio.strftime('%d/%m/%Y %H:%M:%S')}")
     registrar_log(f"Total de planilhas na fila: {len(PLANILHAS_CONFIG)}")
     registrar_log("=" * 65)
 
-    # ==========================================================================
-    # 2. CARREGAMENTO DE CHAVES E PROCESSAMENTO
-    # ==========================================================================
+    # Carregamento de chaves e token de API
     secret_crypto = os.environ.get('secret_crypto')
     iv_crypto = os.environ.get('iv_crypto') or os.environ.get('secret_crypto_iv')
+    api_bot_secret = os.environ.get('API_BOT_SECRET')
 
-    if not secret_crypto or not iv_crypto:
-        erro_chaves = "ERRO CRÍTICO: Variáveis 'secret_crypto' ou 'iv_crypto' não foram encontradas no ambiente."
+    if not secret_crypto or not iv_crypto or not api_bot_secret:
+        erro_chaves = "ERRO CRÍTICO: Variáveis 'secret_crypto', 'iv_crypto' ou 'API_BOT_SECRET' ausentes."
         registrar_log(f"\n❌ {erro_chaves}")
         raise ValueError(erro_chaves)
 
@@ -95,10 +100,14 @@ def processar_todas_as_planilhas():
         url_api = item.get("url")
 
         registrar_log(f"\n[{idx}/{len(PLANILHAS_CONFIG)}] Processando: '{nome_arquivo}'")
-        registrar_log(f" 🔗 URL: {url_api}")
+        registrar_log(f" 🔗 URL Base: {url_api}")
 
         try:
-            response = requests.get(url_api, allow_redirects=True, timeout=30)
+            # Gera o token dinâmico no exato momento da requisição
+            token_dinamico = gerar_token_temporal(api_bot_secret, window_size=300)
+            params = {"token": token_dinamico}
+
+            response = requests.get(url_api, params=params, allow_redirects=True, timeout=30)
 
             if response.status_code != 200:
                 raise RuntimeError(f"HTTP Status {response.status_code} - {response.text}")
@@ -106,7 +115,7 @@ def processar_todas_as_planilhas():
             texto_resposta = response.text.strip()
 
             if texto_resposta.startswith("<") or "<html" in texto_resposta.lower():
-                raise ValueError("A resposta da API retornou uma página HTML de erro/login.")
+                raise ValueError("A resposta da API retornou HTML em vez dos dados encriptados (Possível tela de erro/login).")
 
             if texto_resposta.startswith("Erro:"):
                 raise RuntimeError(f"Erro retornado pelo Apps Script: {texto_resposta}")
@@ -114,12 +123,10 @@ def processar_todas_as_planilhas():
             # Descriptografia
             csv_resultado = decriptografar_csv(texto_resposta, KEY, IV)
 
-            # Salvar o arquivo CSV no diretório das planilhas
             caminho_arquivo_csv = os.path.join(diretorio_planilhas, nome_arquivo)
             with open(caminho_arquivo_csv, "w", encoding="utf-8") as f:
                 f.write(csv_resultado)
 
-            # Contagem de registros via Pandas
             df = pd.read_csv(io.StringIO(csv_resultado))
             registrar_log(f" ✅ Salvo em: {caminho_arquivo_csv}")
             registrar_log(f" 📊 Registros: {len(df)} linhas | {len(df.columns)} colunas")
@@ -127,13 +134,11 @@ def processar_todas_as_planilhas():
             sucessos += 1
 
         except Exception as e:
+            # registrar_log(f" ❌ FALHA ao processar '{nome_arquivo}': {e} {texto_resposta if 'texto_resposta' in locals() else ''}")
             registrar_log(f" ❌ FALHA ao processar '{nome_arquivo}': {e}")
             PLANILHAS_CONFIG_FALHA.append(item)
             falhas += 1
 
-    # ==========================================================================
-    # 3. RESUMO DA EXECUÇÃO
-    # ==========================================================================
     salvar_arquivo_config_falha(caminho_config_falha, PLANILHAS_CONFIG_FALHA)
     data_fim = datetime.now()
     duracao = data_fim - data_inicio
@@ -148,4 +153,5 @@ def processar_todas_as_planilhas():
 
 
 if __name__ == "__main__":
+
     processar_todas_as_planilhas()

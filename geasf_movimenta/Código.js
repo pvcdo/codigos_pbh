@@ -45,7 +45,6 @@ const EVENTOS_CAMPOS = [
   { nome: 'ONLINE/PRESENCIAL' },
   { nome: 'TOTAL DE PARTICIPANTES' },
   { nome: 'Área de Atuação' },
-  { nome: 'Contexto' },
   { nome: 'Calendário da Saúde MS' },
   { nome: 'Calendário de Cores MS' },
   { nome: 'Calendário POEPS' },
@@ -53,6 +52,13 @@ const EVENTOS_CAMPOS = [
   { nome: 'PARCEIROS' },
   { nome: 'Inscrições abertas'}
 ];
+
+function carregarUnidades() {
+  const aba_unidades = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Unidades');
+  const unidades_dados = aba_unidades.getDataRange()
+
+  return unidades_dados
+}
 
 function normalizarCabecalhoEvento_(valor) {
   return String(valor)

@@ -3,11 +3,21 @@
   <label>DATA DO EVENTO *
     <input name="DATA DO EVENTO" type="date" required>
   </label>
-  <label>DISTRITO
-    <input name="DISTRITO" type="text">
-  </label>
   <label>UNIDADES
-    <input name="UNIDADES" type="text">
+    
+    <div class="autocomplete">
+
+      <input
+        id="motivacao"
+        type="text"
+        autocomplete="off"
+        placeholder="Digite para pesquisar"
+      >
+      <div id="listaMotivacao"></div>
+
+    </div>
+
+    <div id="tagsMotivacao" class="tags-motivacao"></div>
   </label>
   <label>Calendário
     <input name="Calendário" type="text">
@@ -34,12 +44,6 @@
   <!--<label>TOTAL DE PARTICIPANTES
     <input name="TOTAL DE PARTICIPANTES" type="number" min="0" step="1">
   </label>-->
-  <label>Área de Atuação
-    <input name="Área de Atuação" type="text">
-  </label>
-  <label>Contexto
-    <textarea name="Contexto"></textarea>
-  </label>
   <label>Calendário da Saúde MS
     <input name="Calendário da Saúde MS" type="text">
   </label>

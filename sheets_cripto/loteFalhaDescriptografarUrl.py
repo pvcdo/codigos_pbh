@@ -7,6 +7,9 @@ from datetime import datetime
 import pandas as pd
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
+import hmac
+import hashlib
+import time
 
 # Importa o arquivo de variáveis de ambiente
 try:
@@ -17,6 +20,17 @@ except ImportError:
 # Importa a lista de configurações do arquivo separado
 from config_planilhas_falha import PLANILHAS_CONFIG_FALHA
 NOVAS_FALHAS = []
+
+def gerar_token_temporal(secret: str, window_size: int = 300) -> str:
+    """
+    Gera um HMAC-SHA256 dinâmico baseado no timestamp Unix em blocos de tempo (padrão: 5 min).
+    """
+    now_in_seconds = int(time.time())
+    current_window = now_in_seconds // window_size
+    message = str(current_window).encode('utf-8')
+    key = secret.encode('utf-8')
+    
+    return hmac.new(key, message, hashlib.sha256).hexdigest()
 
 def salvar_arquivo_config_falha(caminho_arquivo: str, lista_falhas: list):
     """Reescreve o arquivo config_planilhas_falha.py com o array atualizado de falhas."""
@@ -82,9 +96,10 @@ def processar_todas_as_planilhas():
     # ==========================================================================
     secret_crypto = os.environ.get('secret_crypto')
     iv_crypto = os.environ.get('iv_crypto') or os.environ.get('secret_crypto_iv')
+    api_bot_secret = os.environ.get('API_BOT_SECRET')
 
     if not secret_crypto or not iv_crypto:
-        erro_chaves = "ERRO CRÍTICO: Variáveis 'secret_crypto' ou 'iv_crypto' não foram encontradas no ambiente."
+        erro_chaves = "ERRO CRÍTICO: Variáveis 'secret_crypto', 'iv_crypto' ou 'API_BOT_SECRET' ausentes."
         registrar_log(f"\n❌ {erro_chaves}")
         raise ValueError(erro_chaves)
 
@@ -102,7 +117,11 @@ def processar_todas_as_planilhas():
         registrar_log(f" 🔗 URL: {url_api}")
 
         try:
-            response = requests.get(url_api, allow_redirects=True, timeout=30)
+            # Gera o token dinâmico no exato momento da requisição
+            token_dinamico = gerar_token_temporal(api_bot_secret, window_size=300)
+            params = {"token": token_dinamico}
+
+            response = requests.get(url_api, params=params, allow_redirects=True, timeout=30)
 
             if response.status_code != 200:
                 raise RuntimeError(f"HTTP Status {response.status_code} - {response.text}")
