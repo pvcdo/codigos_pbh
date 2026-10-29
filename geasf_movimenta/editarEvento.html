@@ -23,13 +23,33 @@
     <input name="DISTRITO" type="text">
   </label>
   <label>UNIDADES
-    <input name="UNIDADES" type="text">
+    <div class="unidades-autocomplete" data-unidades-picker>
+      <input type="text" data-unidades-input autocomplete="off"
+        placeholder="Digite para pesquisar unidades" aria-autocomplete="list">
+      <div data-unidades-sugestoes></div>
+      <div class="tags-unidades" data-unidades-tags></div>
+      <small data-unidades-erro role="status" aria-live="polite"></small>
+      <input type="hidden" name="UNIDADES" data-unidades-valor>
+    </div>
   </label>
-  <label>Calendário
-    <input name="Calendário" type="text">
-  </label>
+  <fieldset class="wide calendarios-field">
+    <legend>Calendário</legend>
+    <div class="calendarios-opcoes" data-calendarios-picker>
+      <label><input type="checkbox" data-calendario-option value="Calendário da Saúde MS"> Calendário da Saúde MS</label>
+      <label><input type="checkbox" data-calendario-option value="Calendário de Cores MS"> Calendário de Cores MS</label>
+      <label><input type="checkbox" data-calendario-option value="Calendário POEPS"> Calendário POEPS</label>
+      <label><input type="checkbox" data-calendario-option value="Calendário Nacional"> Calendário Nacional</label>
+      <input type="hidden" name="Calendário" data-calendarios-valor>
+    </div>
+  </fieldset>
   <label>TEMA *
-    <input name="TEMAS" type="text" required>
+    <div class="temas-autocomplete" data-temas-picker>
+      <input type="text" data-temas-input autocomplete="off"
+        placeholder="Digite para pesquisar temas" aria-autocomplete="list">
+      <div data-temas-sugestoes></div>
+      <div class="tags-unidades" data-temas-tags></div>
+      <input type="hidden" name="TEMAS" data-temas-valor>
+    </div>
   </label>
   <label>OBJETIVO
     <textarea name="OBJETIVO"></textarea>
@@ -57,18 +77,6 @@
   <label>Área de Atuação
     <input name="Área de Atuação" type="text">
   </label>
-  <label>Calendário da Saúde MS
-    <input name="Calendário da Saúde MS" type="text">
-  </label>
-  <label>Calendário de Cores MS
-    <input name="Calendário de Cores MS" type="text">
-  </label>
-  <label>Calendário POEPS
-    <input name="Calendário POEPS" type="text">
-  </label>
-  <label>Calendário Nacional
-    <input name="Calendário Nacional" type="text">
-  </label>
   <div style="flex">
     <label>Inscrições abertas
       <input type="checkbox" id="inscricoes_abertas" name="Inscrições abertas" value="sim">
@@ -90,8 +98,13 @@
   const statusEditar = document.getElementById('status_editar');
 
   formEditar.addEventListener('submit', function(event) {
-    exibirLoading('Salvando alterações...');
     event.preventDefault();
+    if (!formEditar.elements['TEMAS'].value.trim()) {
+      statusEditar.textContent = 'Selecione pelo menos um tema.';
+      formEditar.querySelector('[data-temas-input]').focus();
+      return;
+    }
+    exibirLoading('Salvando alterações...');
     submitButtonEditar.disabled = true;
     
     const dados = Object.fromEntries(new FormData(formEditar).entries());

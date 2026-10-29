@@ -102,6 +102,109 @@
         grid-column: 1 / -1;
         margin: 0;
       }
+      .unidades-autocomplete {
+        position: relative;
+      }
+      .unidades-sugestoes {
+        background: #fff;
+        border: 1px solid #aab6bf;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 3px 8px rgba(36, 51, 66, .16);
+        left: 0;
+        max-height: 220px;
+        overflow-y: auto;
+        position: absolute;
+        right: 0;
+        top: 42px;
+        z-index: 10;
+      }
+      .unidades-sugestoes:empty {
+        display: none;
+      }
+      .unidades-sugestao {
+        cursor: pointer;
+        font-weight: normal;
+        padding: 9px;
+      }
+      .unidades-sugestao:hover,
+      .unidades-sugestao[aria-selected="true"] {
+        background: #edf3ff;
+      }
+      .tags-unidades {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tag-unidade {
+        align-items: center;
+        background: #e8f2ef;
+        border-radius: 16px;
+        color: #176b55;
+        display: inline-flex;
+        font-size: 14px;
+        font-weight: normal;
+        gap: 6px;
+        padding: 4px 8px;
+      }
+      .tag-unidade button {
+        background: none;
+        color: #176b55;
+        font-size: 18px;
+        line-height: 1;
+        padding: 0;
+      }
+      .unidades-autocomplete small {
+        color: #9a271e;
+        font-weight: normal;
+      }
+      .temas-autocomplete {
+        position: relative;
+      }
+      .temas-sugestoes {
+        background: #fff;
+        border: 1px solid #aab6bf;
+        border-radius: 0 0 4px 4px;
+        box-shadow: 0 3px 8px rgba(36, 51, 66, .16);
+        left: 0;
+        max-height: 220px;
+        overflow-y: auto;
+        position: absolute;
+        right: 0;
+        top: 42px;
+        z-index: 10;
+      }
+      .temas-sugestoes:empty {
+        display: none;
+      }
+      .temas-sugestao {
+        cursor: pointer;
+        font-weight: normal;
+        padding: 9px;
+      }
+      .temas-sugestao:hover,
+      .temas-sugestao[aria-selected="true"] {
+        background: #edf3ff;
+      }
+      .calendarios-field {
+        border: 1px solid #aab6bf;
+        border-radius: 4px;
+        margin: 0;
+        padding: 12px;
+      }
+      .calendarios-field legend {
+        font-weight: bold;
+        padding: 0 5px;
+      }
+      .calendarios-opcoes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 20px;
+      }
+      .calendarios-opcoes label {
+        align-items: center;
+        flex-direction: row;
+        font-weight: normal;
+      }
       @media (max-width: 620px) {
         body { padding: 24px 12px; }
         form { grid-template-columns: 1fr; }
@@ -278,6 +381,9 @@
                 }
               }
             }
+            definirCalendariosSelecionados(formEditar, evento);
+            definirUnidadesSelecionadas(formEditar, evento.UNIDADES || '');
+            definirTemasSelecionados(formEditar, evento.TEMAS || '');
           }
         })
         .withFailureHandler(function(error) {

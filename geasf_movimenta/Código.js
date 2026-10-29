@@ -54,10 +54,18 @@ const EVENTOS_CAMPOS = [
 ];
 
 function carregarUnidades() {
-  const aba_unidades = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Unidades');
-  const unidades_dados = aba_unidades.getDataRange()
+  const abaUnidades = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Unidades');
+  if (!abaUnidades) {
+    throw new Error('A aba "Unidades" não foi encontrada.');
+  }
 
-  return unidades_dados
+  const unidades = abaUnidades
+    .getDataRange()
+    .getDisplayValues()
+    .map(linha => String(linha[0] || '').trim())
+    .filter(unidade => unidade && !/^UNIDADES?$/i.test(unidade));
+
+  return Array.from(new Set(unidades));
 }
 
 function normalizarCabecalhoEvento_(valor) {
@@ -279,9 +287,11 @@ function editarEvento(dados) {
   ).getValues();
 
   let linhaEdicao = -1;
+  let valoresAtuais;
   for (let i = 0; i < ids.length; i++) {
     if (String(ids[i][0]) === String(dados.id_evento)) {
       linhaEdicao = EVENTOS_PRIMEIRA_LINHA + i;
+      valoresAtuais = aba.getRange(linhaEdicao, 1, 1, colunas.ultimaColuna).getValues()[0];
       break;
     }
   }
@@ -292,10 +302,30 @@ function editarEvento(dados) {
 
   const valores = new Array(colunas.ultimaColuna).fill('');
   valores[colunaId] = dados.id_evento;
+  [
+    'Calendário da Saúde MS',
+    'Calendário de Cores MS',
+    'Calendário POEPS',
+    'Calendário Nacional'
+  ].forEach(nome => {
+    const coluna = colunas.mapa[normalizarCabecalhoEvento_(nome)];
+    if (coluna !== undefined) {
+      valores[coluna] = valoresAtuais[coluna];
+    }
+  });
 
   EVENTOS_CAMPOS.forEach(campo => {
-    const valor = dados[campo.nome] || '';
     const colIdx = colunas.mapa[normalizarCabecalhoEvento_(campo.nome)];
+    if (dados[campo.nome] === undefined && [
+      'Calendário da Saúde MS',
+      'Calendário de Cores MS',
+      'Calendário POEPS',
+      'Calendário Nacional'
+    ].includes(campo.nome)) {
+      return;
+    }
+
+    const valor = dados[campo.nome] || '';
     if (colIdx !== undefined) {
       valores[colIdx] =
         campo.nome === 'DATA DO EVENTO' ? dataEvento :

@@ -1,569 +1,413 @@
 <script>
-
-/**
- * ============================================================
- * autocomplete.html
- * Autocomplete das unidades
- * ============================================================
- */
-
-let motivacoesSelecionadas = //executar a função carregarUnidades() que está em Código.gs para trazer os nomes das unidades
-
-
-/**
- * Inicialização
- */
-document.addEventListener(
-    "DOMContentLoaded",
-    iniciarAutocomplete
-);
-
-
-
-
-
-function iniciarAutocomplete(){
-
-
-    const campo =
-    document.getElementById(
-        "motivacao"
-    );
-
-
-
-    if(!campo)
-        return;
-
-
-
-
-
-    campo.addEventListener(
-        "input",
-        pesquisarMotivacao
-    );
-
-
-
-    campo.addEventListener(
-        "focus",
-        pesquisarMotivacao
-    );
-
-
-
-    document.addEventListener(
-        "click",
-        fecharAutocomplete
-    );
-
-
-}
-
-
-
-
-
-
-
-
-
-/**
- * Pesquisa na lista de motivações
- */
-function pesquisarMotivacao(e){
-
-
-
-    const campo =
-    e.target;
-
-
-
-    const valor =
-    campo.value
-    .toLowerCase()
-    .trim();
-
-
-
-
-
-    limparSugestoes();
-
-
-
-
-
-    if(!window.motivacoes)
-        return;
-
-
-
-    if(!valor)
-        return;
-
-
-
-
-
-
-
-    const resultados =
-
-        window.motivacoes.filter(item=>{
-
-
-            return item
-            .toLowerCase()
-            .includes(valor);
-
-
-        })
-        .slice(0,20);
-
-
-
-
-
-
-
-
-    criarSugestoes(
-        resultados
-    );
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/**
- * Cria lista visual
- */
-function criarSugestoes(lista){
-
-
-
-    const container =
-    document.getElementById(
-        "listaMotivacao"
-    );
-
-
-
-    if(!container)
-        return;
-
-
-
-
-
-    const box =
-    document.createElement(
-        "div"
-    );
-
-
-
-    box.className =
-    "autocomplete-items";
-
-
-
-
-
-    lista.forEach(item=>{
-
-
-        const div =
-        document.createElement(
-            "div"
-        );
-
-
-
-        div.className =
-        "autocomplete-item";
-
-
-
-        div.textContent =
-        item;
-
-
-
-
-
-        div.addEventListener(
-            "click",
-            function(e){
-
-
-                e.stopPropagation();
-
-
-
-                selecionarMotivacao(
-                    item
-                );
-
-
-            }
-        );
-
-
-
-        box.appendChild(div);
-
-
-
-    });
-
-
-
-
-
-
-    container.appendChild(box);
-
-
-
-}
-
-
-
-
-
-
-
-
-/**
- * Seleciona uma motivação
- */
-function selecionarMotivacao(valor){
-
-    const campo =
-    document.getElementById(
-        "motivacao"
-    );
-
-    if(
-        !valor ||
-        motivacoesSelecionadas.includes(valor)
-    ){
-
-        campo.value = "";
-        limparSugestoes();
-        return;
-
+  (function() {
+    const seletores = [];
+    const seletoresTemas = [];
+    let unidadesDisponiveis = [];
+    const temasDisponiveis = [
+      'Saúde Mental e Bem-Estar Emocional',
+      'Violência, Proteção e Cultura de Paz',
+      'Prevenção do Câncer e Diagnóstico Precoce',
+      'Saúde Integral da Mulher',
+      'Saúde do Homem',
+      'Saúde Materno-Infantil e Proteção da Infância',
+      'Saúde Sexual e Prevenção de ISTs',
+      'Imunização e Prevenção de Doenças Transmissíveis',
+      'Alimentação Saudável e Prevenção de Doenças Crônicas',
+      'Saúde do Trabalhador e Segurança',
+      'Prevenção de Acidentes e Segurança no Trânsito',
+      'Envelhecimento Saudável e Proteção da Pessoa Idosa',
+      'Doação de Sangue e Solidariedade',
+      'Autocuidado, Direitos e Acesso à Saúde',
+      'Saúde Ambiental e Prevenção de Doenças'
+    ];
+    const camposCalendario = [
+      'Calendário da Saúde MS',
+      'Calendário de Cores MS',
+      'Calendário POEPS',
+      'Calendário Nacional'
+    ];
+
+    function normalizar(texto) {
+      return String(texto)
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLocaleLowerCase();
     }
 
-    motivacoesSelecionadas.push(valor);
-    campo.value =
-    "";
+    function atualizarTemas(seletor) {
+      seletor.valor.value = seletor.selecionados.join(', ');
+    }
 
-    renderizarTagsMotivacao();
-    limparSugestoes();
+    function renderizarTagsTemas(seletor) {
+      seletor.tags.replaceChildren();
 
-}
+      seletor.selecionados.forEach(function(tema, indice) {
+        const tag = document.createElement('span');
+        tag.className = 'tag-unidade';
 
-/**
- * Renderiza as motivações selecionadas como tags removíveis.
- */
-function renderizarTagsMotivacao(){
+        const texto = document.createElement('span');
+        texto.textContent = tema;
+        tag.appendChild(texto);
 
-    const container =
-    document.getElementById("tagsMotivacao");
+        const remover = document.createElement('button');
+        remover.type = 'button';
+        remover.textContent = '×';
+        remover.title = 'Remover ' + tema;
+        remover.setAttribute('aria-label', 'Remover ' + tema);
+        remover.addEventListener('click', function() {
+          seletor.selecionadas.splice(indice, 1);
+          renderizarTagsTemas(seletor);
+          seletor.entrada.focus();
+        });
+        tag.appendChild(remover);
+        seletor.tags.appendChild(tag);
+      });
 
-    if(!container)
-        return;
+      atualizarTemas(seletor);
+    }
 
-    container.innerHTML = "";
+    function limparSugestoesTemas(seletor) {
+      seletor.sugestoes.replaceChildren();
+      seletor.indiceAtivo = -1;
+    }
 
-    motivacoesSelecionadas.forEach((valor, indice) => {
+    function selecionarTema(seletor, tema) {
+      if (!seletor.selecionadas.some(function(item) {
+        return normalizar(item) === normalizar(tema);
+      })) {
+        seletor.selecionadas.push(tema);
+        renderizarTagsTemas(seletor);
+      }
 
-        const tag =
-        document.createElement("div");
+      seletor.entrada.value = '';
+      limparSugestoesTemas(seletor);
+      seletor.entrada.focus();
+    }
 
-        tag.className = "tag-motivacao";
+    function mostrarSugestoesTemas(seletor) {
+      const termo = normalizar(seletor.entrada.value.trim());
+      const resultados = temasDisponiveis.filter(function(tema) {
+        return normalizar(tema).includes(termo) &&
+          !seletor.selecionadas.some(function(selecionado) {
+            return normalizar(selecionado) === normalizar(tema);
+          });
+      });
 
-        const texto =
-        document.createElement("span");
+      limparSugestoesTemas(seletor);
+      resultados.forEach(function(tema) {
+        const opcao = document.createElement('div');
+        opcao.className = 'temas-sugestao';
+        opcao.textContent = tema;
+        opcao.setAttribute('role', 'option');
+        opcao.setAttribute('aria-selected', 'false');
+        opcao.addEventListener('mousedown', function(evento) {
+          evento.preventDefault();
+          selecionarTema(seletor, tema);
+        });
+        seletor.sugestoes.appendChild(opcao);
+      });
+    }
 
-        texto.textContent = valor;
+    function inicializarTemas() {
+      document.querySelectorAll('[data-temas-picker]').forEach(function(container) {
+        const seletor = {
+          entrada: container.querySelector('[data-temas-input]'),
+          sugestoes: container.querySelector('[data-temas-sugestoes]'),
+          tags: container.querySelector('[data-temas-tags]'),
+          valor: container.querySelector('[data-temas-valor]'),
+          selecionadas: [],
+          indiceAtivo: -1
+        };
+        seletor.sugestoes.className = 'temas-sugestoes';
+        seletoresTemas.push(seletor);
 
-        const botao =
-        document.createElement("button");
+        seletor.entrada.addEventListener('input', function() {
+          mostrarSugestoesTemas(seletor);
+        });
+        seletor.entrada.addEventListener('focus', function() {
+          mostrarSugestoesTemas(seletor);
+        });
+        seletor.entrada.addEventListener('keydown', function(evento) {
+          const opcoes = seletor.sugestoes.querySelectorAll('.temas-sugestao');
+          if (evento.key === 'ArrowDown' && opcoes.length) {
+            evento.preventDefault();
+            seletor.indiceAtivo = (seletor.indiceAtivo + 1) % opcoes.length;
+          } else if (evento.key === 'ArrowUp' && opcoes.length) {
+            evento.preventDefault();
+            seletor.indiceAtivo =
+              (seletor.indiceAtivo - 1 + opcoes.length) % opcoes.length;
+          } else if (evento.key === 'Enter' && seletor.indiceAtivo >= 0) {
+            evento.preventDefault();
+            selecionarTema(seletor, opcoes[seletor.indiceAtivo].textContent);
+            return;
+          } else if (evento.key === 'Escape') {
+            limparSugestoesTemas(seletor);
+            return;
+          } else {
+            return;
+          }
 
-        botao.type = "button";
-        botao.title = "Remover motivação";
-        botao.setAttribute("aria-label", "Remover motivação");
-        botao.textContent = "×";
-
-        botao.addEventListener("click", function(){
-            motivacoesSelecionadas.splice(indice, 1);
-            renderizarTagsMotivacao();
+          opcoes.forEach(function(opcao, indice) {
+            const ativa = indice === seletor.indiceAtivo;
+            opcao.setAttribute('aria-selected', String(ativa));
+            if (ativa) opcao.scrollIntoView({ block: 'nearest' });
+          });
         });
 
-        tag.appendChild(texto);
-        tag.appendChild(botao);
-        container.appendChild(tag);
+        container.addEventListener('click', function(evento) {
+          evento.stopPropagation();
+        });
+      });
+    }
 
+    function inicializarCalendarios() {
+      document.querySelectorAll('[data-calendarios-picker]').forEach(function(container) {
+        const valor = container.querySelector('[data-calendarios-valor]');
+        const opcoes = Array.from(container.querySelectorAll('[data-calendario-option]'));
+        opcoes.forEach(function(opcao) {
+          opcao.addEventListener('change', function() {
+            valor.value = opcoes
+              .filter(function(item) { return item.checked; })
+              .map(function(item) { return item.value; })
+              .join(', ');
+          });
+        });
+      });
+    }
+
+    function atualizarValor(seletor) {
+      seletor.valor.value = seletor.selecionadas.join(', ');
+    }
+
+    function renderizarTags(seletor) {
+      seletor.tags.replaceChildren();
+
+      seletor.selecionadas.forEach(function(unidade, indice) {
+        const tag = document.createElement('span');
+        tag.className = 'tag-unidade';
+
+        const texto = document.createElement('span');
+        texto.textContent = unidade;
+        tag.appendChild(texto);
+
+        const remover = document.createElement('button');
+        remover.type = 'button';
+        remover.textContent = '×';
+        remover.title = 'Remover ' + unidade;
+        remover.setAttribute('aria-label', 'Remover ' + unidade);
+        remover.addEventListener('click', function() {
+          seletor.selecionadas.splice(indice, 1);
+          atualizarValor(seletor);
+          renderizarTags(seletor);
+          seletor.entrada.focus();
+        });
+        tag.appendChild(remover);
+        seletor.tags.appendChild(tag);
+      });
+
+      atualizarValor(seletor);
+    }
+
+    function limparSugestoes(seletor) {
+      seletor.sugestoes.replaceChildren();
+      seletor.indiceAtivo = -1;
+    }
+
+    function selecionarUnidade(seletor, unidade) {
+      if (!seletor.selecionadas.some(function(item) {
+        return normalizar(item) === normalizar(unidade);
+      })) {
+        seletor.selecionadas.push(unidade);
+        renderizarTags(seletor);
+      }
+
+      seletor.entrada.value = '';
+      limparSugestoes(seletor);
+      seletor.entrada.focus();
+    }
+
+    function mostrarSugestoes(seletor) {
+      const termo = normalizar(seletor.entrada.value.trim());
+      const resultados = unidadesDisponiveis.filter(function(unidade) {
+        return normalizar(unidade).includes(termo) &&
+          !seletor.selecionadas.some(function(selecionada) {
+            return normalizar(selecionada) === normalizar(unidade);
+          });
+      }).slice(0, 20);
+
+      limparSugestoes(seletor);
+      resultados.forEach(function(unidade) {
+        const opcao = document.createElement('div');
+        opcao.className = 'unidades-sugestao';
+        opcao.textContent = unidade;
+        opcao.setAttribute('role', 'option');
+        opcao.setAttribute('aria-selected', 'false');
+        opcao.addEventListener('mousedown', function(evento) {
+          evento.preventDefault();
+          selecionarUnidade(seletor, unidade);
+        });
+        seletor.sugestoes.appendChild(opcao);
+      });
+    }
+
+    function marcarOpcao(seletor) {
+      const opcoes = seletor.sugestoes.querySelectorAll('.unidades-sugestao');
+      opcoes.forEach(function(opcao, indice) {
+        const ativa = indice === seletor.indiceAtivo;
+        opcao.setAttribute('aria-selected', String(ativa));
+        if (ativa) {
+          opcao.scrollIntoView({ block: 'nearest' });
+        }
+      });
+    }
+
+    function inicializarSeletor(container) {
+      const seletor = {
+        entrada: container.querySelector('[data-unidades-input]'),
+        sugestoes: container.querySelector('[data-unidades-sugestoes]'),
+        tags: container.querySelector('[data-unidades-tags]'),
+        erro: container.querySelector('[data-unidades-erro]'),
+        valor: container.querySelector('[data-unidades-valor]'),
+        selecionadas: [],
+        indiceAtivo: -1
+      };
+
+      seletor.sugestoes.className = 'unidades-sugestoes';
+      seletor.entrada.disabled = true;
+      seletores.push(seletor);
+
+      seletor.entrada.addEventListener('input', function() {
+        mostrarSugestoes(seletor);
+      });
+      seletor.entrada.addEventListener('focus', function() {
+        mostrarSugestoes(seletor);
+      });
+      seletor.entrada.addEventListener('keydown', function(evento) {
+        const opcoes = seletor.sugestoes.querySelectorAll('.unidades-sugestao');
+        if (evento.key === 'ArrowDown' && opcoes.length) {
+          evento.preventDefault();
+          seletor.indiceAtivo = (seletor.indiceAtivo + 1) % opcoes.length;
+          marcarOpcao(seletor);
+        } else if (evento.key === 'ArrowUp' && opcoes.length) {
+          evento.preventDefault();
+          seletor.indiceAtivo =
+            (seletor.indiceAtivo - 1 + opcoes.length) % opcoes.length;
+          marcarOpcao(seletor);
+        } else if (evento.key === 'Enter' && seletor.indiceAtivo >= 0) {
+          evento.preventDefault();
+          selecionarUnidade(seletor, opcoes[seletor.indiceAtivo].textContent);
+        } else if (evento.key === 'Escape') {
+          limparSugestoes(seletor);
+        }
+      });
+
+      container.addEventListener('click', function(evento) {
+        evento.stopPropagation();
+      });
+    }
+
+    window.definirUnidadesSelecionadas = function(formulario, valor) {
+      const container = formulario.querySelector('[data-unidades-picker]');
+      const seletor = seletores.find(function(item) {
+        return item.entrada.closest('[data-unidades-picker]') === container;
+      });
+      if (!seletor) return;
+
+      const unidades = String(valor || '')
+        .split(',')
+        .map(function(unidade) { return unidade.trim(); })
+        .filter(Boolean);
+      seletor.selecionadas = [];
+      unidades.forEach(function(unidade) {
+        const existente = seletor.selecionadas.some(function(item) {
+          return normalizar(item) === normalizar(unidade);
+        });
+        if (!existente) seletor.selecionadas.push(unidade);
+      });
+      seletor.entrada.value = '';
+      renderizarTags(seletor);
+    };
+
+    window.definirTemasSelecionados = function(formulario, valor) {
+      const container = formulario.querySelector('[data-temas-picker]');
+      const seletor = seletoresTemas.find(function(item) {
+        return item.entrada.closest('[data-temas-picker]') === container;
+      });
+      if (!seletor) return;
+
+      seletor.selecionadas = [];
+      String(valor || '')
+        .split(',')
+        .map(function(tema) { return tema.trim(); })
+        .filter(Boolean)
+        .forEach(function(tema) {
+          const existente = seletor.selecionadas.some(function(item) {
+            return normalizar(item) === normalizar(tema);
+          });
+          if (!existente) seletor.selecionadas.push(tema);
+        });
+      seletor.entrada.value = '';
+      renderizarTagsTemas(seletor);
+    };
+
+    window.definirCalendariosSelecionados = function(formulario, evento) {
+      const container = formulario.querySelector('[data-calendarios-picker]');
+      if (!container) return;
+
+      const valor = container.querySelector('[data-calendarios-valor]');
+      const opcoes = Array.from(container.querySelectorAll('[data-calendario-option]'));
+      let selecionados = String(evento.Calendário || '')
+        .split(',')
+        .map(function(calendario) { return calendario.trim(); })
+        .filter(Boolean);
+
+      if (!selecionados.length) {
+        selecionados = camposCalendario.filter(function(campo) {
+          return String(evento[campo] || '').trim();
+        });
+      }
+
+      opcoes.forEach(function(opcao) {
+        opcao.checked = selecionados.some(function(calendario) {
+          return normalizar(calendario) === normalizar(opcao.value);
+        });
+      });
+      valor.value = selecionados.join(', ');
+    };
+
+    document.addEventListener('click', function() {
+      seletores.forEach(limparSugestoes);
+      seletoresTemas.forEach(limparSugestoesTemas);
     });
 
-}
-
-/**
- * Retorna as tags no formato esperado pelo cadastro.
- */
-function obterValorMotivacao(){
-
-    const campo =
-    document.getElementById("motivacao");
-
-    const textoDigitado =
-    campo ? campo.value.trim() : "";
-
-    return motivacoesSelecionadas
-        .concat(textoDigitado ? [textoDigitado] : [])
-        .join("; ");
-
-}
-
-/**
- * Remove todas as tags selecionadas.
- */
-function limparMotivacoesSelecionadas(){
-
-    motivacoesSelecionadas = [];
-    renderizarTagsMotivacao();
-
-}
-
-
-
-
-
-
-
-
-
-
-/**
- * Remove sugestões abertas
- */
-function limparSugestoes(){
-
-    indiceAutocomplete = -1;
-
-
-
-    const container =
-    document.getElementById(
-        "listaMotivacao"
-    );
-
-
-
-    if(container){
-
-
-        container.innerHTML="";
-
-
-    }
-
-
-}
-
-
-
-
-
-
-
-
-/**
- * Fecha quando clicar fora
- */
-function fecharAutocomplete(e){
-
-
-
-    const campo =
-    document.getElementById(
-        "motivacao"
-    );
-
-
-
-    const lista =
-    document.getElementById(
-        "listaMotivacao"
-    );
-
-
-
-
-
-    if(
-        campo &&
-        lista &&
-        !campo.contains(e.target) &&
-        !lista.contains(e.target)
-    ){
-
-
-        limparSugestoes();
-
-
-    }
-
-
-
-}
-
-
-
-
-
-
-
-
-
-/**
- * Permite escolher com teclado
- * (setas + Enter)
- */
-let indiceAutocomplete = -1;
-
-
-
-document.addEventListener(
-    "keydown",
-    function(e){
-
-
-
-        const lista =
-        document.querySelectorAll(
-            ".autocomplete-item"
-        );
-
-
-
-        if(!lista.length)
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('[data-unidades-picker]').forEach(inicializarSeletor);
+      inicializarTemas();
+      inicializarCalendarios();
+
+      google.script.run
+        .withSuccessHandler(function(unidades) {
+          if (!Array.isArray(unidades)) {
+            seletores.forEach(function(seletor) {
+              seletor.erro.textContent = 'A lista de unidades retornada pelo servidor é inválida.';
+            });
             return;
-
-
-
-
-
-        if(e.key==="ArrowDown"){
-
-
-            indiceAutocomplete++;
-
-
-
-            if(
-                indiceAutocomplete >= lista.length
-            ){
-
-                indiceAutocomplete=0;
-
-            }
-
-
-
-            marcarSugestao(
-                lista
-            );
-
-        }
-
-
-
-
-
-
-        if(e.key==="ArrowUp"){
-
-
-            indiceAutocomplete--;
-
-
-
-            if(
-                indiceAutocomplete < 0
-            ){
-
-                indiceAutocomplete =
-                lista.length-1;
-
-            }
-
-
-
-            marcarSugestao(
-                lista
-            );
-
-        }
-
-
-
-
-
-
-        if(e.key==="Enter"){
-
-
-
-            if(
-                indiceAutocomplete >=0
-            ){
-
-
-                selecionarMotivacao(
-                    lista[
-                        indiceAutocomplete
-                    ]
-                    .textContent
-                );
-
-
-
-                e.preventDefault();
-
-
-            }
-
-
-        }
-
-
-
-    }
-
-);
-function marcarSugestao(lista){
-    lista.forEach(
-        item=>
-        item.style.background=""
-    );
-    lista[
-        indiceAutocomplete
-    ]
-    .style.background="#edf3ff";
-}
+          }
+          unidadesDisponiveis = unidades
+            .map(function(unidade) { return String(unidade).trim(); })
+            .filter(Boolean);
+          seletores.forEach(function(seletor) {
+            seletor.entrada.disabled = false;
+          });
+        })
+        .withFailureHandler(function(erro) {
+          seletores.forEach(function(seletor) {
+            seletor.erro.textContent = erro && erro.message
+              ? erro.message
+              : 'Não foi possível carregar as unidades.';
+          });
+        })
+        .carregarUnidades();
+    });
+  })();
 </script>
