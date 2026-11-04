@@ -35,8 +35,13 @@
   <label>OBJETIVO
     <textarea name="OBJETIVO"></textarea>
   </label>
-  <label>TIPO DE AÇÃO
-    <input name="TIPO DE AÇÃO" type="text">
+  <label>TIPO DE AÇÃO *
+    <!-- <input name="TIPO DE AÇÃO" type="text"> -->
+    <select name="TIPO DE AÇÃO" required>
+      <option value="">Selecione</option>
+      <option value="Roda de conversa">Roda de conversa</option>
+      <option value="Bate papo com especialista">Bate papo com especialista</option>
+    </select>
   </label>
   <label>ESPECIFICAÇÃO *
     <input name="ESPECIFICAÇÃO" type="text" required>
@@ -52,7 +57,7 @@
     <input name="TOTAL DE PARTICIPANTES" type="number" min="0" step="1">
   </label>-->
   <label>Inscrições abertas 
-    <input type="checkbox" id="inscricoes_abertas" name="Inscrições abertas">
+    <input type="checkbox" id="novo_inscricoes_abertas" name="Inscrições abertas" checked>
   </label>
 
   <label class="wide">PARCEIROS
@@ -78,7 +83,12 @@
     }
     exibirLoading('Salvando evento...');
     submitButton.disabled = true;
-    const dados = Object.fromEntries(new FormData(form).entries());
+
+    var dados = Object.fromEntries(new FormData(form).entries());
+
+    // Busca o checkbox especificamente dentro do formulário atual (evita conflito com o formulário de edição)
+    const cbx_insc = form.querySelector('input[name="Inscrições abertas"]');
+    dados['Inscrições abertas'] = (cbx_insc && cbx_insc.checked) ? 'sim' : 'não';
 
     google.script.run
       .withSuccessHandler(function(eventosAtualizados) {

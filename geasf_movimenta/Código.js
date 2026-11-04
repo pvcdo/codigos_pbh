@@ -29,6 +29,44 @@ function testes(){
   console.log(eventos.length)
 }
 
+const ABA_USUARIOS = "Usuarios";
+const DOMINIO_PERMITIDO = "@pbh.gov.br";
+
+const PERMISSOES = {
+  GESTOR: "Gestor",
+  OPERADOR: "Operador",
+  LEITURA: "Leitura"
+};
+
+/**
+ * Valida se o token enviado corresponde à janela de tempo atual (blocos de 5 min)
+ */
+function validarTokenTemporal(tokenEnviado) {
+  var secret = PropertiesService.getScriptProperties().getProperty('API_BOT_SECRET');
+  if (!secret) return false;
+
+  var windowSizeInSeconds = 300; // Janela de 5 minutos (300 segundos)
+  var nowInSeconds = Math.floor(Date.now() / 1000);
+  var currentWindow = Math.floor(nowInSeconds / windowSizeInSeconds);
+
+  // Calcula o token esperado para a janela atual e para a janela anterior (tolerância de delay)
+  var tokenAtual = gerarHmacToken(secret, currentWindow);
+  var tokenAnterior = gerarHmacToken(secret, currentWindow - 1);
+
+  return (tokenEnviado === tokenAtual || tokenEnviado === tokenAnterior);
+}
+
+function gerarHmacToken(secret, windowStep) {
+  var message = windowStep.toString();
+  var byteSignature = Utilities.computeHmacSha256Signature(message, secret);
+  
+  // Converte o array de bytes em string Hexadecimal
+  return byteSignature.map(function(byte) {
+    var hex = (byte < 0 ? byte + 256 : byte).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }).join('');
+}
+
 const EVENTOS_ABA = 'Eventos';
 const PRESENCA_ABA = 'Lista_presenca'
 const EVENTOS_LINHA_CABECALHO = 4;
@@ -432,11 +470,16 @@ function doGet(e) {
   const parametros = e && e.parameter ? e.parameter : {};
   const action = parametros.action;
 
-  if (['cadastro', 'presenca'].indexOf(action) === -1) {
-    throw new Error('Página não encontrada.');
+  if (['cadastro', 'presenca','export_csv'].indexOf(action) === -1) {
+    throw new Error('Rota não encontrada.');
   }
 
-  const template = HtmlService.createTemplateFromFile(action);
+  var template
+
+  if (['cadastro', 'presenca'].indexOf(action) !== -1) {
+    template = HtmlService.createTemplateFromFile(action);
+  }
+  
   if (action === 'presenca') {
     if (!parametros.evento) {
       throw new Error('Sem parâmetro evento');
@@ -456,7 +499,48 @@ function doGet(e) {
       template.mensagemErro = 'Evento não encontrado ou ID inválido.';
     }
   } else if (action === 'cadastro') {
-    template.eventos = listarEventos_();
+    
+    // ============================================================
+    // FLUXO 2: INTERFACE WEB (Usuário Humano via Google Workspace)
+    // ============================================================
+    try {
+      // Valida o e-mail corporativo @pbh.gov.br e o perfil na planilha
+      var usuario = validarPermissaoUsuario([PERMISSOES.GESTOR, PERMISSOES.OPERADOR, PERMISSOES.LEITURA]);
+      
+      template.eventos = listarEventos_();
+    } catch (error) {
+      return HtmlService.createHtmlOutput(
+        "<div style='font-family:sans-serif; padding: 20px; color: #721c24; background-color: #f8d7da; border-radius: 5px; border: 1px solid #f5c6cb;'>" +
+        "<h3>Bloqueio de Segurança</h3>" +
+        "<p>" + error.message + "</p>" +
+        "</div>"
+      );
+    }
+
+    //template.eventos = listarEventos_();
+  } else if (action === 'export_csv') {
+    try {
+      var tokenEnviado = e && e.parameter.token ? e.parameter.token : null;
+
+      // Validação do Token Dinâmico por Tempo
+      if (!tokenEnviado || !validarTokenTemporal(tokenEnviado)) {
+        return ContentService
+          .createTextOutput("Erro: Acesso negado. Token expirado, inválido ou ausente.")
+          .setMimeType(ContentService.MimeType.TEXT);
+      }
+
+      var aba = e && e.parameter.aba ? e.parameter.aba : null;
+      if (!aba) throw new Error('Parâmetro "aba" não informado.');
+
+      return ContentService
+        .createTextOutput(exportarEEncriptarCSV(aba))
+        .setMimeType(ContentService.MimeType.TEXT);
+
+    } catch (err) {
+      return ContentService
+        .createTextOutput("Erro: " + err.message)
+        .setMimeType(ContentService.MimeType.TEXT);
+    }
   }
 
   // Captura o e-mail do usuário atual
@@ -469,10 +553,95 @@ function doGet(e) {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
+function validarPermissaoUsuario(perfisPermitidos) {
+  var email = Session.getActiveUser().getEmail();
+  
+  if (!email || !email.toLowerCase().endsWith(DOMINIO_PERMITIDO)) {
+    throw new Error("Acesso negado: É necessário estar autenticado com uma conta " + DOMINIO_PERMITIDO);
+  }
+
+  email = email.toLowerCase();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheetUsuarios = ss.getSheetByName(ABA_USUARIOS);
+  
+  if (!sheetUsuarios) {
+    throw new Error("Aba '" + ABA_USUARIOS + "' para controle de permissões não foi encontrada.");
+  }
+
+  var dados = sheetUsuarios.getDataRange().getValues();
+  
+  for (var i = 1; i < dados.length; i++) {
+    var userEmail = dados[i][0] ? dados[i][0].toString().toLowerCase().trim() : "";
+    var perfil = dados[i][2];
+    var status = dados[i][3];
+
+    if (userEmail === email && status === "Ativo") {
+      if (!perfisPermitidos || perfisPermitidos.includes(perfil)) {
+        return { email: email, perfil: perfil };
+      } else {
+        throw new Error("Seu perfil (" + perfil + ") não possui privilégios para acessar este módulo.");
+      }
+    }
+  }
+
+  throw new Error("O e-mail " + email + " não está cadastrado ou está inativo no sistema.");
+}
+
 function include(filename, data) {
   const template = HtmlService.createTemplateFromFile(filename);
   if (data) {
     template.data = data;
   }
   return template.evaluate().getContent();
+}
+
+function exportarEEncriptarCSV(aba) {
+
+  const pg_dados = aba
+
+  const props = PropertiesService.getScriptProperties()
+
+  const secret_crypto = props.getProperty('secret_crypto')
+  const iv_crypto = props.getProperty('iv_crypto')
+
+  eval(UrlFetchApp.fetch("https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js").getContentText())
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet()
+  var sheet = ss.getSheetByName(pg_dados);
+  // Pega o fuso horário configurado na planilha (ex: GMT-03:00)
+  var timeZone = ss.getSpreadsheetTimeZone();
+  
+  // Usa getValues() para manter os tipos originais (Texto, Número, Date)
+  var data = sheet.getDataRange().getValues();
+  
+  // 1. Converter os dados para formato CSV formatando datas e aspas
+  var csvContent = data.map(function(row) {
+    return row.map(function(cell) {
+      var text;
+      
+      // Se a célula for um objeto do tipo Data, formata como dd/MM/yyyy
+      if (cell instanceof Date) {
+        text = Utilities.formatDate(cell, timeZone, "dd/MM/yyyy");
+      } else {
+        text = cell.toString().replace(/"/g, '""');
+      }
+      
+      return '"' + text + '"';
+    }).join(",");
+  }).join("\n");
+
+  // 2. Definir a Chave e o IV (Vetor de Inicialização)
+  // IMPORTANTE: A chave deve ter 32 caracteres (256 bits) e o IV 16 caracteres (128 bits)
+  var SECRET_KEY = CryptoJS.enc.Utf8.parse(secret_crypto); // 32 bytes
+  var SECRET_IV  = CryptoJS.enc.Utf8.parse(iv_crypto);                 // 16 bytes
+
+  // 3. Criptografar a string CSV com AES-256-CBC
+  var encrypted = CryptoJS.AES.encrypt(csvContent, SECRET_KEY, {
+    iv: SECRET_IV,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  });
+
+  // O resultado criptografado em Base64
+  return encrypted.toString();
 }

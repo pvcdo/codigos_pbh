@@ -405,6 +405,29 @@
         document.getElementById("editar_evento").style.display = "none";
         document.getElementById("lista_eventos").style.display = "block";
         document.getElementById("novo_evento").style.display = "none";
+
+        // Captura o formulário de novo evento para reinicializá-lo
+        const formNovo = document.getElementById('formEvento');
+        if (formNovo) {
+          // Restaura os campos nativos do formulário (text, date, select, checkbox) aos valores padrão
+          formNovo.reset();
+
+          // Limpa o estado interno e visual do autocomplete de Unidades e Temas
+          if (typeof definirUnidadesSelecionadas === 'function') {
+            definirUnidadesSelecionadas(formNovo, '');
+          }
+          if (typeof definirTemasSelecionados === 'function') {
+            definirTemasSelecionados(formNovo, '');
+          }
+
+          // Desmarca os checkboxes das opções de Calendário e limpa o valor oculto
+          const checkboxesCalendario = formNovo.querySelectorAll('[data-calendario-option]');
+          checkboxesCalendario.forEach(function(cb) { cb.checked = false; });
+          const hiddenCalendario = formNovo.querySelector('[data-calendarios-valor]');
+          if (hiddenCalendario) {
+            hiddenCalendario.value = '';
+          }
+        }
       }
 
       function mostrarNovoEvento() {
@@ -434,7 +457,7 @@
         }
 
         // Captura a URL base da aplicação Web sem os parâmetros de busca
-        const urlBase = 'https://script.google.com/a/macros/pbh.gov.br/s/AKfycbwQ1C1JZI1sI-TbzijbbIFFo87ZlKSlBhkSZbsxFbC2/dev';
+        const urlBase = 'https://script.google.com/a/macros/pbh.gov.br/s/AKfycbxIFLUXmbGEIgDAlEHqjQq-3OQyfyQeC-elmjoiqmMItDE6SXPg3cqW0y6oaociirpufw/exec';
         const urlPresenca = `${urlBase}?action=presenca&evento=${idEvento}`;
 
         // Copia o link para a área de transferência

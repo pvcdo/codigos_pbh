@@ -54,5 +54,8 @@ PLANILHAS_CONFIG = [
       },{
         "nome_arquivo": "fReadaptados.csv",
         "url": "https://script.google.com/macros/s/AKfycbwPV6peLPIkTNZfK5eXGoeHqd6o07zl28g0jTA7_YgY9OknuqMj8JtOks1AhLWmpRE/exec?action=export_csv&aba=Readapta%C3%A7%C3%A3o%20Funcional"
+      },{
+        "nome_arquivo": "dAcoesMovimenta.csv",
+        "url": "https://script.google.com/macros/s/AKfycbxIFLUXmbGEIgDAlEHqjQq-3OQyfyQeC-elmjoiqmMItDE6SXPg3cqW0y6oaociirpufw/exec?action=export_csv&aba=Eventos"
       },
 ]

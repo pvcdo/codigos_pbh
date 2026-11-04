@@ -5,7 +5,7 @@
     let unidadesDisponiveis = [];
     const temasDisponiveis = [
       'Saúde Mental e Bem-Estar Emocional',
-      'Violência, Proteção e Cultura de Paz',
+      'Violência Proteção e Cultura de Paz',
       'Prevenção do Câncer e Diagnóstico Precoce',
       'Saúde Integral da Mulher',
       'Saúde do Homem',
@@ -17,7 +17,7 @@
       'Prevenção de Acidentes e Segurança no Trânsito',
       'Envelhecimento Saudável e Proteção da Pessoa Idosa',
       'Doação de Sangue e Solidariedade',
-      'Autocuidado, Direitos e Acesso à Saúde',
+      'Autocuidado Direitos e Acesso à Saúde',
       'Saúde Ambiental e Prevenção de Doenças'
     ];
     const camposCalendario = [
@@ -35,13 +35,13 @@
     }
 
     function atualizarTemas(seletor) {
-      seletor.valor.value = seletor.selecionados.join(', ');
+      seletor.valor.value = seletor.selecionadas.join(', ');
     }
 
     function renderizarTagsTemas(seletor) {
       seletor.tags.replaceChildren();
 
-      seletor.selecionados.forEach(function(tema, indice) {
+      seletor.selecionadas.forEach(function(tema, indice) {
         const tag = document.createElement('span');
         tag.className = 'tag-unidade';
 
@@ -57,7 +57,7 @@
         remover.addEventListener('click', function() {
           seletor.selecionadas.splice(indice, 1);
           renderizarTagsTemas(seletor);
-          seletor.entrada.focus();
+          //seletor.entrada.focus(); //dá foco para o seletor abrindo a lista de opções
         });
         tag.appendChild(remover);
         seletor.tags.appendChild(tag);
@@ -199,7 +199,7 @@
           seletor.selecionadas.splice(indice, 1);
           atualizarValor(seletor);
           renderizarTags(seletor);
-          seletor.entrada.focus();
+          //seletor.entrada.focus(); //dá foco para o seletor abrindo a lista de opções
         });
         tag.appendChild(remover);
         seletor.tags.appendChild(tag);
