@@ -73,7 +73,6 @@ const EVENTOS_LINHA_CABECALHO = 4;
 const EVENTOS_PRIMEIRA_LINHA = 5;
 const EVENTOS_CAMPOS = [
   { nome: 'DATA DO EVENTO' },
-  { nome: 'DISTRITO' },
   { nome: 'UNIDADES' },
   { nome: 'Calendário' },
   { nome: 'TEMAS' },
@@ -82,11 +81,7 @@ const EVENTOS_CAMPOS = [
   { nome: 'ESPECIFICAÇÃO' },
   { nome: 'ONLINE/PRESENCIAL' },
   { nome: 'TOTAL DE PARTICIPANTES' },
-  { nome: 'Área de Atuação' },
-  { nome: 'Calendário da Saúde MS' },
-  { nome: 'Calendário de Cores MS' },
-  { nome: 'Calendário POEPS' },
-  { nome: 'Calendário Nacional' },
+  {nome : 'REGISTRO MANUAL DE PRESENÇA'},
   { nome: 'PARCEIROS' },
   { nome: 'Inscrições abertas'}
 ];
