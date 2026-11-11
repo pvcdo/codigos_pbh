@@ -7,224 +7,93 @@
  * ============================================================
  */
 
+const TEMPO_LIMITE_CHAMADA_MS = 45000;
+
+function chamarServidor(funcao, argumentos, tempoLimite){
+
+    return new Promise((resolve, reject)=>{
+
+        let concluida = false;
+        const timeout = tempoLimite === 0
+            ? null
+            : window.setTimeout(()=>{
+                concluida = true;
+                reject(new Error("A solicitação ao servidor excedeu 45 segundos. Tente novamente."));
+            }, TEMPO_LIMITE_CHAMADA_MS);
+
+        const runner = google.script.run
+            .withSuccessHandler(function(resposta){
+                if(concluida)
+                    return;
+
+                concluida = true;
+                if(timeout !== null)
+                    window.clearTimeout(timeout);
+                resolve(resposta);
+            })
+            .withFailureHandler(function(erro){
+                if(concluida)
+                    return;
+
+                concluida = true;
+                if(timeout !== null)
+                    window.clearTimeout(timeout);
+                reject(erro);
+            });
+
+        try{
+            runner[funcao](...argumentos);
+        }catch(erro){
+            concluida = true;
+            if(timeout !== null)
+                window.clearTimeout(timeout);
+            reject(erro);
+        }
+
+    });
+
+}
 
 const API = {
 
+    carregarDadosIniciais(){
+        return chamarServidor("carregarDadosIniciais", []);
+    },
+
     listarProcessos(dados){
-
-        return new Promise((resolve,reject)=>{
-
-            google.script.run
-            .withSuccessHandler(resolve)
-            .withFailureHandler(reject)
-            .listarProcessos(
-                dados.pagina,
-                dados.tamanhoPagina,
-                dados.filtro
-            );
-
-        });
-
+        return chamarServidor("listarProcessos", [
+            dados.pagina,
+            dados.tamanhoPagina,
+            dados.filtro
+        ]);
     },
 
-    /**
-     * Busca processo pelo PDG ou ID
-     */
     buscarProcesso(dados){
-
-        return new Promise((resolve,reject)=>{
-
-
-            google.script.run
-
-            .withSuccessHandler(function(resposta){
-
-                resolve(resposta);
-
-            })
-
-            .withFailureHandler(function(erro){
-
-                reject(erro);
-
-            })
-
-            .buscarProcesso(
-                dados.valor,
-                dados.tipo
-            );
-
-
-        });
-
-
+        return chamarServidor("buscarProcesso", [
+            dados.valor,
+            dados.tipo
+        ]);
     },
 
-
-
-
-    /**
-     * Busca servidor pelo BM
-     */
     buscarServidor(bm){
-
-
-        return new Promise((resolve,reject)=>{
-
-
-            google.script.run
-
-            .withSuccessHandler(function(resposta){
-
-                resolve(resposta);
-
-            })
-
-
-            .withFailureHandler(function(erro){
-
-                reject(erro);
-
-            })
-
-
-            .buscarServidorPorBM(bm);
-
-
-
-        });
-
-
+        return chamarServidor("buscarServidorPorBM", [bm]);
     },
 
-
-
-
-
-    /**
-     * Realiza o cadastro
-     */
     cadastrarProcesso(dados){
-
-
-        return new Promise((resolve,reject)=>{
-
-
-            google.script.run
-
-            .withSuccessHandler(function(resposta){
-
-                resolve(resposta);
-
-            })
-
-
-            .withFailureHandler(function(erro){
-
-                reject(erro);
-
-            })
-
-
-            .cadastrarProcesso(dados);
-
-
-
-        });
-
-
+        return chamarServidor("cadastrarProcesso", [dados], 0);
     },
 
     atualizarProcesso(dados, linhaBase){
-
-        return new Promise((resolve,reject)=>{
-
-            google.script.run
-            .withSuccessHandler(resolve)
-            .withFailureHandler(reject)
-            .atualizarProcesso(dados, linhaBase);
-
-        });
-
+        return chamarServidor("atualizarProcesso", [dados, linhaBase], 0);
     },
 
-
-
-
-
-    /**
-     * Carrega listas do sistema
-     */
     carregarListas(){
-
-
-        return new Promise((resolve,reject)=>{
-
-
-            google.script.run
-
-            .withSuccessHandler(function(resposta){
-
-                resolve(resposta);
-
-            })
-
-
-            .withFailureHandler(function(erro){
-
-                reject(erro);
-
-            })
-
-
-            .getListasFormulario();
-
-
-
-        });
-
-
+        return chamarServidor("getListasFormulario", []);
     },
 
-
-
-
-
-    /**
-     * Busca data atual
-     */
     hoje(){
-
-
-        return new Promise((resolve,reject)=>{
-
-
-            google.script.run
-
-            .withSuccessHandler(function(resposta){
-
-                resolve(resposta);
-
-            })
-
-
-            .withFailureHandler(function(erro){
-
-                reject(erro);
-
-            })
-
-
-            .getDataAtual();
-
-
-
-        });
-
-
+        return chamarServidor("getDataAtual", []);
     }
-
-
 
 };
 

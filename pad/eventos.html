@@ -23,49 +23,37 @@ let linhaProcessoEditando = null;
 
 async function iniciarSistema(){
 
-
     try{
-
-
         mostrarLoading(true);
-
-
-        await carregarListas();
-
-
-        await preencherDataAtual();
-
-        configurarLimiteDataRecebimento();
-
-
         configurarEventos();
 
+        const resposta = await API.carregarDadosIniciais();
+        if(!resposta || !resposta.ok){
+            throw new Error(resposta ? resposta.mensagem : "Não foi possível carregar os dados iniciais.");
+        }
 
+        await carregarListas(resposta.dados.listas);
+        configurarLimiteDataRecebimento();
         limparFormulario();
-
-        await carregarProcessos();
-
+        await preencherDataAtual(resposta.dados.dataAtual);
+        renderizarProcessos(resposta.dados);
 
     }
     catch(e){
-
-
+        const mensagem = "Falha ao carregar os dados. Use Filtrar para tentar novamente.";
+        document.getElementById("resumoProcessos").textContent = mensagem;
+        const mensagemLista = document.getElementById("mensagemLista");
+        mensagemLista.textContent = e.message;
+        mensagemLista.hidden = false;
         mostrarToast(
             "Erro ao iniciar sistema: " + e.message,
             "erro"
         );
 
-
     }
     finally{
-
-
         mostrarLoading(false);
-
-
     }
-
-
 }
 
 /**
@@ -265,6 +253,9 @@ async function carregarProcessos(){
         if(!resposta || !resposta.ok){
             const mensagem = resposta ? resposta.mensagem : "Não foi possível carregar os processos.";
             resumo.textContent = mensagem;
+            const mensagemLista = document.getElementById("mensagemLista");
+            mensagemLista.textContent = mensagem;
+            mensagemLista.hidden = false;
             mostrarToast(mensagem, "erro");
             return;
         }
@@ -274,6 +265,9 @@ async function carregarProcessos(){
     }catch(e){
 
         resumo.textContent = "Erro ao carregar os processos.";
+        const mensagemLista = document.getElementById("mensagemLista");
+        mensagemLista.textContent = e.message;
+        mensagemLista.hidden = false;
         mostrarToast("Erro ao carregar os processos: " + e.message, "erro");
 
     }finally{
@@ -616,9 +610,9 @@ async function buscarBM(){
 /**
  * Carrega listas do formulário
  */
-async function carregarListas(){
+async function carregarListas(listas){
 
-    const listas = await API.carregarListas();
+    listas = listas || await API.carregarListas();
 
     // Armazena o mapa de status na janela do navegador
     window.mapaStatus = listas.statusPorTipo;
@@ -719,11 +713,10 @@ function preencherSelect(id,lista){
 /**
  * Define data atual
  */
-async function preencherDataAtual(){
-
+async function preencherDataAtual(dataAtual){
 
     const data =
-    await API.hoje();
+    dataAtual || await API.hoje();
 
 
 
