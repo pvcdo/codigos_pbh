@@ -36,7 +36,7 @@ Para executar qualquer script deste repositório diretamente na sua planilha sem
 ```powerquery
 let
     // 1. Informe a URL Raw do GitHub (ou caminho local)
-    URL = "https://githubusercontent.comSEU-USUARIO/SEU-REPOSITORIO/main/scripts/nome-do-script.m",
+    URL = "https://raw.githubusercontent.com/pvcdo/codigos_pbh/refs/heads/master/power-query/uniao_se01_tc0001.m",
     
     // 2. Lê o conteúdo do arquivo como texto
     CodigoTexto = Text.FromBinary(Web.Contents(URL)),
